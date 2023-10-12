@@ -1,2 +1,8 @@
 rich==13.4.2
-psycopg2-binary==2.9.2
+psycopg2-binary==2.9.2 # postgresql
+python-dotenv==1.0.0
+pytz==2022.1 # timezones
+colorama==0.4.4
+requests==2.31.0
+fake_headers==1.0.2
+scapy==2.5.0 # network-package manipulation

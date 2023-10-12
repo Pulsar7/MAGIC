@@ -1,0 +1,24 @@
+(<12.10.2023> 22:23:44) [INFO] Started.
+(<12.10.2023> 22:23:44) [INFO] Running on a Unix-Based-System (posix)
+(<12.10.2023> 22:23:44) [INFO] Started ALL-Checkup
+(<12.10.2023> 22:23:44) [INFO] Checking root-permissions
+(<12.10.2023> 22:23:44) [ERROR] I need root-priviliges in order to operate properly!
+(<12.10.2023> 22:23:44) [INFO] Checking the network-availablity
+(<12.10.2023> 22:23:44) [WARNING] Looks like I have no available internet-connection!
+(<12.10.2023> 22:23:44) [INFO] Closed. (Runtime=0.0011241436004638672 Seconds)
+(<12.10.2023> 22:26:34) [INFO] Started.
+(<12.10.2023> 22:26:34) [INFO] Running on a Unix-Based-System (posix)
+(<12.10.2023> 22:26:34) [INFO] Started ALL-Checkup
+(<12.10.2023> 22:26:34) [INFO] Checking root-permissions
+(<12.10.2023> 22:26:34) [ERROR] I need root-priviliges in order to operate properly!
+(<12.10.2023> 22:26:34) [INFO] Checking the network-availablity
+(<12.10.2023> 22:26:34) [WARNING] Looks like I have no available internet-connection!
+(<12.10.2023> 22:26:34) [INFO] Closed. (Runtime=0.0011439323425292969 Seconds)
+(<12.10.2023> 22:27:8) [INFO] Started.
+(<12.10.2023> 22:27:8) [INFO] Running on a Unix-Based-System (posix)
+(<12.10.2023> 22:27:8) [INFO] Started ALL-Checkup
+(<12.10.2023> 22:27:8) [INFO] Checking root-permissions
+(<12.10.2023> 22:27:8) [ERROR] I need root-priviliges in order to operate properly!
+(<12.10.2023> 22:27:8) [INFO] Checking the network-availablity
+(<12.10.2023> 22:27:8) [WARNING] Looks like I have no available internet-connection!
+(<12.10.2023> 22:27:8) [INFO] Closed. (Runtime=0.0011382102966308594 Seconds)
