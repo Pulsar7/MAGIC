@@ -17,13 +17,14 @@ from src.modules.web_tools import WEBTOOLS
 from src.modules.wifi_tools import WIFITOOLS
 from src.modules.network_tools import NETWORKTOOLS
 from src.modules.speech_recognizer import SPEECH_RECOGNIZER
+from src.modules.speaker import SPEAKER
 #
 
 
 class MAGIC():
-    def __init__(self,logger:LOGGER,person_db,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool) -> None:
+    def __init__(self,logger:LOGGER,person_db:PERSON_DATABASE,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool,speaker:SPEAKER) -> None:
         (self.logger,self.person_db,self.webtools,
-            self.wifitools,self.networktools,self.speech_recognizer) = (logger,person_db,webtools,wifitools,networktools,speech_recognizer)
+            self.wifitools,self.networktools,self.speech_recognizer,self.speaker) = (logger,person_db,webtools,wifitools,networktools,speech_recognizer,speaker)
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
@@ -55,9 +56,6 @@ class MAGIC():
             os.system("cls")
         else:
             print('\n' * 100)  # A simple alternative for other system
-        
-    def check_if_root(self) -> bool:
-        return os.geteuid() == 0
     
     def check_all(self) -> bool:
         """Checks all available tools and services.
@@ -68,19 +66,14 @@ class MAGIC():
         self.logger.console.rule()
         self.logger.info("Started Complete-Checkup")
         self.logger.info(f"Current-Logger-Filepath: '{self.logger.get_current_log_filepath()}'",write_in_file=False)
-        self.logger.info("Checking root-permissions",progress=True)
-        if self.check_if_root():
-            self.logger.success()
-        else:
-            self.logger.failed()
-            self.logger.error("I need root-priviliges in order to operate properly!")
-            return False
+        # Get interfaces
         available_interfaces:dict = self.networktools.get_available_interfaces()
         self.logger.info(f"I can register {len(list(available_interfaces.keys()))} available interfaces")
         for iface in available_interfaces:
             self.logger.found(msg=iface,write_in_file=False)
-        self.logger.info("Checking the network-availablity",progress=True)
-        (netw_avail_status,resp) = self.networktools.check_network_availability()
+        # Check internet-connection
+        self.logger.info("Checking the internet-connection-availablity",progress=True)
+        (netw_avail_status,resp) = self.networktools.check_internet_connection_availability()
         if netw_avail_status:
             self.logger.success()
             self.logger.info(resp)
@@ -89,6 +82,14 @@ class MAGIC():
             self.logger.failed()
             self.logger.error(resp)
             self.logger.warning("Looks like I have no available internet-connection!")
+        # Check person-database
+        self.logger.info("Check PersonDB-Filepath",progress=True)
+        if self.person_db.check_db_filepath():
+            self.logger.success()
+        else:
+            self.logger.failed()
+            self.logger.error("Please check the Person-Database filepath!")
+            self.running = False
         self.logger.console.rule()
         return True
     
@@ -100,39 +101,68 @@ class MAGIC():
         self.logger.info("Started.")
         self.logger.info(f"Running on a {self.get_os()}-System ({os.name})")
         start:float = time.time()
-        
         if self.check_all(): # All tools/services are probably good.
+            self.logger.info("Checked all services",say=True,cli_output=False)
             if self.network_availability == False:
-                self.logger.warning("Cannot use Speech-Recognition without an internet-connection!")
+                self.logger.warning("Cannot use Speech-Recognition without an internet-connection!",say=True)
                 self.use_speech_recognition = False
             elif self.use_speech_recognition == False:
-                self.logger.warning("Not using Speech-Recognition")
-                
+                self.logger.warning("Not using Speech-Recognition",say=True)
+            if self.running == True:
+                self.person_db.create_connection()
+                self.logger.info("Creating/Checking PersonDB-Tables",progress=True)
+                (status,resp) = self.person_db.create_tables()
+                if status == True:
+                    self.logger.success()
+                    self.logger.info(resp)
+                else:
+                    self.logger.failed()
+                    self.logger.error(resp)
+                    self.running = False
+            else:
+                self.logger.warning("Skipped creating/checking the PersonDB-Tables")
             ###### MAIN-Loop ######
             errors:int = 0
             user_input:str = ""
             while (self.running):
-                if self.use_speech_recognition == True:
-                    (status,text) = self.speech_recognizer.capture_microphone()
-                    if status == True:
-                        user_input = text
-                    else:
-                        self.logger.error(text)
-                        errors += 1
-                else:
-                    user_input:str = self.logger.colored_input()
-                #### HANDLE USER INPUT!
-                if errors >= 5:
-                    self.logger.error("Too many errors!")
+                try:
+                    try:
+                        if self.use_speech_recognition == True:
+                            (status,text) = self.speech_recognizer.capture_microphone()
+                            if status == True:
+                                user_input = text
+                            else:
+                                self.logger.error(text)
+                                errors += 1
+                        else:
+                            user_input:str = self.logger.colored_input()
+                        self.logger.info(f"Sorry but I didn't understand '{user_input}'",say=True,cli_output=False,write_in_file=False)
+                        ###############################################################
+                        self.running = False #######!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        ###############################################################
+                        #### HANDLE USER INPUT!
+                        if errors >= 5:
+                            self.logger.error("Too many errors!",say=True)
+                            self.running = False
+                    except KeyboardInterrupt:
+                        raise Exception("Detected Keyboard-Interruption")
+                except Exception as _error:
+                    self.logger.error(f"An error occured: {str(_error)}")
                     self.running = False
             ######
-        
         self.logger.info(f"Closed. (Runtime={time.time()-start} Seconds)")
+        self.person_db.close_conn()
         
         
 
 ####### ArgumentParser
 parser = argparse.ArgumentParser(description="M.A.G.I.C.")
+speaker_group = parser.add_argument_group(title="Speaker",description="Configure the Speaker")
+speaker_group.add_argument(
+    '-s','--speak-to-me',help=f"Speak to me with a voice",
+    action="store_true",default=False
+)
+
 speech_recognition_group = parser.add_argument_group(title="Speech Recognition",description="Configure the Speech-Recognizer")
 speech_recognition_group.add_argument(
     '-ws','--without-speech-recognition',help="Deactivates the speech-recognizer.",
@@ -168,12 +198,13 @@ webtools_group.add_argument(
 args = parser.parse_args()
 #######
 
-
+# Speaker
+speaker = SPEAKER()
 # Logger
-logger = LOGGER(timezone_name=args.timezone,logger_filedir=args.logger_filedir)
+logger = LOGGER(timezone_name=args.timezone,logger_filedir=args.logger_filedir,speaker=speaker,speak_to_me_status=args.speak_to_me)
 # Person-Database
 person_db = PERSON_DATABASE(
-    db_host=PERSON_DB_HOST,db_pwd=PERSON_DB_PWD,db_username=PERSON_DB_USER,db_name=PERSON_DB_NAME,
+    db_filepath=PERSON_DB_FILEPATH,
     logger=logger
 )
 # WebTools
@@ -208,6 +239,7 @@ if __name__ == '__main__':
         wifitools=wifitools,
         networktools=networktools,
         speech_recognizer=speech_recognizer,
-        use_speech_recognition=not args.without_speech_recognition
+        use_speech_recognition=not args.without_speech_recognition,
+        speaker=speaker
     )
     magic.run()

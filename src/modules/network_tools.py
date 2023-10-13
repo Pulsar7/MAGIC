@@ -18,11 +18,11 @@ class NETWORKTOOLS():
         interfaces = psutil.net_if_addrs()
         return interfaces
     
-    def check_network_availability(self) -> tuple((bool,str)):
-        """Check the network availablity on current device
+    def check_internet_connection_availability(self) -> tuple((bool,str)):
+        """Check the internet-connection availablity on current device
 
         Returns:
-            tuple((bool,str)): Returns the status of the network availablity and then a message to output
+            tuple((bool,str)): Returns the status of the internet-connection availablity and then a message to output
         """
         try:
             sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM) # TCP
@@ -31,7 +31,7 @@ class NETWORKTOOLS():
             if result == 0:
                 resp = requests.get("http://"+self.reliable_service_host+":"+str(self.reliable_service_port))
                 if resp.status_code == 200:
-                    return (True,f"Successfully tested the network connection at '{self.reliable_service_host}:{self.reliable_service_port}'")
+                    return (True,f"Successfully tested the internet-connection at '{self.reliable_service_host}:{self.reliable_service_port}'")
                 else:
                     return (False,f"Received status-code '{resp.status_code}' while trying to access '{self.reliable_service_host}:{self.reliable_service_port}'")
             else:

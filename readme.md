@@ -9,6 +9,7 @@
 - [Explanation](#explanation)
 - [Usage](#usage)
 - [Speech Recognition](#speech-recognition)
+- [Person-Database](#person-database)
 
 ## Explanation
 
@@ -16,7 +17,7 @@
 
 ## Usage
 
-    chmod +x run.sh && sudo bash run.sh
+    chmod +x run.sh && bash run.sh
 
 If you need an overview of the program-parameters, type:
 
@@ -28,3 +29,9 @@ In order to access the microphone and process its input the program needs the py
 You can deactivate the **Speech-Recognition** by running the script like this:
 
     bash run.py -ws
+
+
+## Person-Database
+
+The **Person-Database** uses a *SQLITE3-Database* which is stored in the `src/dbs/`-Folder.
+

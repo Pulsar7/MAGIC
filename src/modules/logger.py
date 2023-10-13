@@ -10,15 +10,19 @@ import sys,pytz
 from datetime import datetime
 from colorama import (Fore as f,init)
 from rich import (console as cons)
+from rich.tree import Tree
+from rich import print as rprint
 
 
 init()
 
 class LOGGER():
-    def __init__(self,timezone_name:str,logger_filedir:str) -> None:
+    def __init__(self,timezone_name:str,logger_filedir:str,speaker,speak_to_me_status:bool) -> None:
         self.timezone = pytz.timezone(timezone_name)
         self.console = cons.Console()
         self.logger_filedir:str = logger_filedir
+        self.speaker = speaker
+        self.speak_to_me_status:bool = speak_to_me_status
         
     def get_now(self,date:bool=False,without_color:bool=False) -> str:
         """Get the current date & time of the specific timezone.
@@ -40,7 +44,7 @@ class LOGGER():
             return "("+current_date+str(n.hour)+":"+str(n.minute)+":"+str(n.second)+") "
     
     def get_current_log_filepath(self) -> str:
-        """_summary_
+        """Get current LOG-filepath.
 
         Returns:
             str: Returns the current LOG-Output-Filepath.
@@ -63,31 +67,35 @@ class LOGGER():
             self.error(f"Couldn't write log-entry in logfile '{self.get_current_log_filepath()}'")
             self.error(str(error))
     
-    def info(self,msg:str,progress:bool=False,write_in_file:bool=True) -> None:
-        """Outputs an info-message to the CLI.
-
-        Args:
-            msg (str): Message to output
-            progress (bool, optional): Print without a newline. Defaults to False.
-            write_in_file (bool, optional): Write in LOG-File. Defaults to True.
+    def info(self,msg:str,progress:bool=False,write_in_file:bool=True,say:bool=False,cli_output:bool=True) -> None:
         """
-        if progress == False:
+        
+        """    
+        if progress == False and cli_output == True:
             print(self.get_now()+f.WHITE+"["+f.LIGHTYELLOW_EX+"INFO"+f.WHITE+"] "+f.RESET+msg)
-        else:
+        elif progress == True and cli_output == True:
             sys.stdout.write("\r"+self.get_now()+f.WHITE+"["+f.LIGHTYELLOW_EX+"INFO"+f.WHITE+"] "+f.RESET+msg+"...")
             sys.stdout.flush()
         if write_in_file == True:
             self.write_in_logger_file(log=msg)
+        if say == True and self.speak_to_me_status == True:
+            self.speaker.say(msg)
             
-    def error(self,msg:str,write_in_file:bool=True) -> None:
-        print(self.get_now()+f.WHITE+"["+f.RED+"ERROR"+f.WHITE+"] "+f.LIGHTRED_EX+msg+f.RESET)
+    def error(self,msg:str,write_in_file:bool=True,say:bool=False,cli_output:bool=True) -> None:
+        if cli_output == True:
+            print(self.get_now()+f.WHITE+"["+f.RED+"ERROR"+f.WHITE+"] "+f.LIGHTRED_EX+msg+f.RESET)
         if write_in_file == True:
             self.write_in_logger_file(log=msg,log_type="error")
+        if say == True and self.speak_to_me_status == True:
+            self.speaker.say("ERROR: "+msg)
     
-    def warning(self,msg:str,write_in_file:bool=True) -> None:
-        print(self.get_now()+f.WHITE+"["+f.YELLOW+"WARNING"+f.WHITE+"] "+f.YELLOW+msg+f.RESET)
+    def warning(self,msg:str,write_in_file:bool=True,say:bool=False,cli_output:bool=True) -> None:
+        if cli_output == True:
+            print(self.get_now()+f.WHITE+"["+f.YELLOW+"WARNING"+f.WHITE+"] "+f.YELLOW+msg+f.RESET)
         if write_in_file == True:
             self.write_in_logger_file(log=msg,log_type="warning")
+        if say == True and self.speak_to_me_status == True:
+            self.speaker.say("WARNING: "+msg)
         
     def success(self,msg:str="") -> None:
         if len(msg) > 0:
@@ -114,4 +122,4 @@ class LOGGER():
             self.write_in_logger_file(log=msg) # LOG as 'info'
             
     def colored_input(self) -> object:
-        return input(f.WHITE+"#"+f.YELLOW+"$"+f.LIGHTGREEN_EX+"> ")
+        return input(f.WHITE+"#"+f.YELLOW+"$"+f.LIGHTGREEN_EX+"> "+f.RESET)

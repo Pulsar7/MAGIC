@@ -17,10 +17,7 @@ load_dotenv()
 
 
 ### Person-Database
-PERSON_DB_HOST:str = os.environ.get("PERSON_DB_HOSTNAME")
-PERSON_DB_PWD:str = os.environ.get("PERSON_DB_PWD")
-PERSON_DB_USER:str = os.environ.get("PERSON_DB_USER")
-PERSON_DB_NAME:str = os.environ.get("PERSON_DB_NAME")
+PERSON_DB_FILEPATH:str = os.environ.get("PERSON_DB_FILEPATH")
 
 ### Logging
 LOGGER_FILEDIR:str = os.environ.get("LOGGER_FILEDIR")
