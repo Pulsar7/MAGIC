@@ -12,5 +12,3 @@ Python-Version: 3.10.12
 class WIFITOOLS():
     def __init__(self,logger) -> None:
         (self.logger) = (logger)
-
-    

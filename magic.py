@@ -21,10 +21,12 @@ from src.modules.speech_recognizer import SPEECH_RECOGNIZER
 
 
 class MAGIC():
-    def __init__(self,logger:LOGGER,person_db,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS) -> None:
+    def __init__(self,logger:LOGGER,person_db,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool) -> None:
         (self.logger,self.person_db,self.webtools,
-            self.wifitools,self.networktools) = (logger,person_db,webtools,wifitools,networktools)
-        #
+            self.wifitools,self.networktools,self.speech_recognizer) = (logger,person_db,webtools,wifitools,networktools,speech_recognizer)
+        # Status-Variables
+        self.network_availability:bool = False
+        self.use_speech_recognition:bool = use_speech_recognition
         #
         
     def get_os(self) -> str:
@@ -71,7 +73,7 @@ class MAGIC():
         else:
             self.logger.failed()
             self.logger.error("I need root-priviliges in order to operate properly!")
-            # return False ### ! Should be without the 'hashtag'!
+            return False
         available_interfaces:dict = self.networktools.get_available_interfaces()
         self.logger.info(f"I can register {len(list(available_interfaces.keys()))} available interfaces")
         for iface in available_interfaces:
@@ -81,6 +83,7 @@ class MAGIC():
         if netw_avail_status:
             self.logger.success()
             self.logger.info(resp)
+            self.network_availability = True
         else:
             self.logger.failed()
             self.logger.error(resp)
@@ -98,7 +101,12 @@ class MAGIC():
         start:float = time.time()
         
         if self.check_all(): # All tools/services are probably good.
-            pass
+            if self.network_availability == False:
+                self.logger.warning("Cannot use Speech-Recognition without an internet-connection!")
+                self.use_speech_recognition = False
+            elif self.use_speech_recognition == False:
+                self.logger.warning("Not using Speech-Recognition")
+
         
         self.logger.info(f"Closed. (Runtime={time.time()-start} Seconds)")
         
@@ -107,7 +115,10 @@ class MAGIC():
 ####### ArgumentParser
 parser = argparse.ArgumentParser(description="M.A.G.I.C.")
 speech_recognition_group = parser.add_argument_group(title="Speech Recognition",description="Configure the Speech-Recognizer")
-
+speech_recognition_group.add_argument(
+    '-ws','--without-speech-recognition',help="Deactivates the speech-recognizer.",
+    action="store_true",default=False
+)
 
 logger_group = parser.add_argument_group(title="LOGGER",description="Configure the LOGs")
 logger_group.add_argument(
@@ -176,6 +187,8 @@ if __name__ == '__main__':
         logger=logger,
         webtools=webtools,
         wifitools=wifitools,
-        networktools=networktools
+        networktools=networktools,
+        speech_recognizer=speech_recognizer,
+        use_speech_recognition=not args.without_speech_recognition
     )
     magic.run()

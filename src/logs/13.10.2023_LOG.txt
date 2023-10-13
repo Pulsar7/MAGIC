@@ -1,0 +1,31 @@
+(<13.10.2023> 10:29:23) [INFO] Started.
+(<13.10.2023> 10:29:23) [INFO] Running on a Unix-Based-System (posix)
+(<13.10.2023> 10:29:23) [INFO] Started Complete-Checkup
+(<13.10.2023> 10:29:23) [INFO] Checking root-permissions
+(<13.10.2023> 10:29:23) [ERROR] I need root-priviliges in order to operate properly!
+(<13.10.2023> 10:29:23) [INFO] Closed. (Runtime=0.0007214546203613281 Seconds)
+(<13.10.2023> 10:29:30) [INFO] Started.
+(<13.10.2023> 10:29:30) [INFO] Running on a Unix-Based-System (posix)
+(<13.10.2023> 10:29:30) [INFO] Started Complete-Checkup
+(<13.10.2023> 10:29:30) [INFO] Checking root-permissions
+(<13.10.2023> 10:29:30) [INFO] I can register 3 available interfaces
+(<13.10.2023> 10:29:30) [INFO] Checking the network-availablity
+(<13.10.2023> 10:29:31) [INFO] Successfully tested the network connection at 'www.google.de:80'
+(<13.10.2023> 10:29:31) [INFO] Closed. (Runtime=0.5794062614440918 Seconds)
+(<13.10.2023> 10:30:4) [INFO] Started.
+(<13.10.2023> 10:30:4) [INFO] Running on a Unix-Based-System (posix)
+(<13.10.2023> 10:30:4) [INFO] Started Complete-Checkup
+(<13.10.2023> 10:30:4) [INFO] Checking root-permissions
+(<13.10.2023> 10:30:4) [INFO] I can register 3 available interfaces
+(<13.10.2023> 10:30:4) [INFO] Checking the network-availablity
+(<13.10.2023> 10:30:4) [INFO] Successfully tested the network connection at 'www.google.de:80'
+(<13.10.2023> 10:30:4) [INFO] Closed. (Runtime=0.1613309383392334 Seconds)
+(<13.10.2023> 10:31:16) [INFO] Started.
+(<13.10.2023> 10:31:16) [INFO] Running on a Unix-Based-System (posix)
+(<13.10.2023> 10:31:16) [INFO] Started Complete-Checkup
+(<13.10.2023> 10:31:16) [INFO] Checking root-permissions
+(<13.10.2023> 10:31:16) [INFO] I can register 3 available interfaces
+(<13.10.2023> 10:31:16) [INFO] Checking the network-availablity
+(<13.10.2023> 10:31:16) [INFO] Successfully tested the network connection at 'www.google.de:80'
+(<13.10.2023> 10:31:16) [WARNING] Not using the Speech-Recognition
+(<13.10.2023> 10:31:16) [INFO] Closed. (Runtime=0.16466927528381348 Seconds)

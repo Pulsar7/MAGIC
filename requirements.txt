@@ -7,3 +7,6 @@ requests==2.31.0
 fake_headers==1.0.2
 scapy==2.5.0 # network-package manipulation
 psutil==5.9.0 # process & system monitoring
+SpeechRecognition==3.10.0
+pyaudio==0.2.13 # convert the audio input into text
+pocketsphinx==5.0.2 # convert the audio input into text
