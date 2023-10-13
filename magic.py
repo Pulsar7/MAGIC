@@ -106,7 +106,10 @@ class MAGIC():
                 self.use_speech_recognition = False
             elif self.use_speech_recognition == False:
                 self.logger.warning("Not using Speech-Recognition")
-
+            if self.use_speech_recognition == True:
+                (status,text) = self.speech_recognizer.capture_microphone()
+                
+        
         
         self.logger.info(f"Closed. (Runtime={time.time()-start} Seconds)")
         

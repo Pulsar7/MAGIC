@@ -8,6 +8,7 @@
 
 - [Explanation](#explanation)
 - [Usage](#usage)
+- [Speech Recognition](#speech-recognition)
 
 ## Explanation
 
@@ -20,3 +21,10 @@
 If you need an overview of the program-parameters, type:
 
     bash run.sh --help
+
+## Speech Recognition
+
+In order to access the microphone and process its input the program needs the python-modules `SpeechRecognition`, `pyaudio` & `pocketsphinx`. Because of the free availablity of the Google-API, this program needs a functional internet-connection in order to use speech-recognition. <br>
+You can deactivate the **Speech-Recognition** by running the script like this:
+
+    bash run.py -ws
