@@ -112,3 +112,6 @@ class LOGGER():
         print(self.get_now()+f.WHITE+"["+f.LIGHTBLUE_EX+brackets_text+f.WHITE+"] "+f.WHITE+msg+f.RESET)
         if write_in_file == True:
             self.write_in_logger_file(log=msg) # LOG as 'info'
+            
+    def colored_input(self) -> object:
+        return input(f.WHITE+"#"+f.YELLOW+"$"+f.LIGHTGREEN_EX+"> ")

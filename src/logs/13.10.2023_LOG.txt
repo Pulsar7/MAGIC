@@ -118,3 +118,12 @@
 (<13.10.2023> 10:53:46) [INFO] Successfully tested the network connection at 'www.google.de:80'
 (<13.10.2023> 10:53:46) [INFO] Listening to microphone
 (<13.10.2023> 10:53:46) [INFO] Closed. (Runtime=0.17964982986450195 Seconds)
+(<13.10.2023> 11:3:50) [INFO] Started.
+(<13.10.2023> 11:3:50) [INFO] Running on a Unix-Based-System (posix)
+(<13.10.2023> 11:3:50) [INFO] Started Complete-Checkup
+(<13.10.2023> 11:3:50) [INFO] Checking root-permissions
+(<13.10.2023> 11:3:50) [INFO] I can register 3 available interfaces
+(<13.10.2023> 11:3:50) [INFO] Checking the network-availablity
+(<13.10.2023> 11:3:50) [INFO] Successfully tested the network connection at 'www.google.de:80'
+(<13.10.2023> 11:3:50) [WARNING] Not using Speech-Recognition
+(<13.10.2023> 11:3:50) [INFO] Closed. (Runtime=0.3429908752441406 Seconds)

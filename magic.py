@@ -27,6 +27,7 @@ class MAGIC():
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
+        self.running:bool = True
         #
         
     def get_os(self) -> str:
@@ -106,10 +107,25 @@ class MAGIC():
                 self.use_speech_recognition = False
             elif self.use_speech_recognition == False:
                 self.logger.warning("Not using Speech-Recognition")
-            if self.use_speech_recognition == True:
-                (status,text) = self.speech_recognizer.capture_microphone()
                 
-        
+            ###### MAIN-Loop ######
+            errors:int = 0
+            user_input:str = ""
+            while (self.running):
+                if self.use_speech_recognition == True:
+                    (status,text) = self.speech_recognizer.capture_microphone()
+                    if status == True:
+                        user_input = text
+                    else:
+                        self.logger.error(text)
+                        errors += 1
+                else:
+                    user_input:str = self.logger.colored_input()
+                #### HANDLE USER INPUT!
+                if errors >= 5:
+                    self.logger.error("Too many errors!")
+                    self.running = False
+            ######
         
         self.logger.info(f"Closed. (Runtime={time.time()-start} Seconds)")
         

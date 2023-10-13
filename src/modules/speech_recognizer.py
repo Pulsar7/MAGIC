@@ -41,7 +41,7 @@ class SPEECH_RECOGNIZER():
             return (True,recognized_text)
         except Exception as error:
             self.logger.failed()
-            return (False,str(error))
+            return (False,"An error occured while Speech-Recognition: "+str(error))
     
     
     
