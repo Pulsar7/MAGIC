@@ -16,11 +16,12 @@ from src.modules.person_database import PERSON_DATABASE
 from src.modules.web_tools import WEBTOOLS
 from src.modules.wifi_tools import WIFITOOLS
 from src.modules.network_tools import NETWORKTOOLS
+from src.modules.speech_recognizer import SPEECH_RECOGNIZER
 #
 
 
 class MAGIC():
-    def __init__(self,logger,person_db,webtools,wifitools,networktools) -> None:
+    def __init__(self,logger:LOGGER,person_db,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS) -> None:
         (self.logger,self.person_db,self.webtools,
             self.wifitools,self.networktools) = (logger,person_db,webtools,wifitools,networktools)
         #
@@ -62,20 +63,27 @@ class MAGIC():
             bool: Return a Boolean in order to return the operation status after the "CheckUp".
         """
         self.logger.console.rule()
-        self.logger.info("Started ALL-Checkup")
+        self.logger.info("Started Complete-Checkup")
         self.logger.info(f"Current-Logger-Filepath: '{self.logger.get_current_log_filepath()}'",write_in_file=False)
         self.logger.info("Checking root-permissions",progress=True)
         if self.check_if_root():
-            self.logger.ok()
-        else:
-            self.logger.failed()
-            self.logger.error("I need root-priviliges in order to operate properly!")
-            # return False
-        self.logger.info("Checking the network-availablity",progress=True)
-        if self.networktools.check_network_availability():
             self.logger.success()
         else:
             self.logger.failed()
+            self.logger.error("I need root-priviliges in order to operate properly!")
+            # return False ### ! Should be without the 'hashtag'!
+        available_interfaces:dict = self.networktools.get_available_interfaces()
+        self.logger.info(f"I can register {len(list(available_interfaces.keys()))} available interfaces")
+        for iface in available_interfaces:
+            self.logger.found(msg=iface,write_in_file=False)
+        self.logger.info("Checking the network-availablity",progress=True)
+        (netw_avail_status,resp) = self.networktools.check_network_availability()
+        if netw_avail_status:
+            self.logger.success()
+            self.logger.info(resp)
+        else:
+            self.logger.failed()
+            self.logger.error(resp)
             self.logger.warning("Looks like I have no available internet-connection!")
         self.logger.console.rule()
         return True
@@ -89,23 +97,50 @@ class MAGIC():
         self.logger.info(f"Running on a {self.get_os()}-System ({os.name})")
         start:float = time.time()
         
-        ### Start procedure
-        if self.check_all():
+        if self.check_all(): # All tools/services are probably good.
             pass
-        ###
+        
         self.logger.info(f"Closed. (Runtime={time.time()-start} Seconds)")
         
         
 
-# ArgumentParser
-parser = argparse.ArgumentParser()
-"""parser.add_argument(
-    '-l','--logger_filepath'
-)"""
+####### ArgumentParser
+parser = argparse.ArgumentParser(description="M.A.G.I.C.")
+speech_recognition_group = parser.add_argument_group(title="Speech Recognition",description="Configure the Speech-Recognizer")
+
+
+logger_group = parser.add_argument_group(title="LOGGER",description="Configure the LOGs")
+logger_group.add_argument(
+    '-l','--logger-filedir',help=f"The LOG-File-Directory (Default={LOGGER_FILEDIR})",
+    type=str,default=LOGGER_FILEDIR
+)
+logger_group.add_argument(
+    '-t','--timezone',help=f"Timezone-name (Default={TIMEZONE_NAME})",
+    type=str,default=TIMEZONE_NAME
+)
+
+networktools_group = parser.add_argument_group(title="NetworkTools",description="Configure NetworkTools")
+networktools_group.add_argument(
+    '-rh','--reliable-service-host',help=f"Reliable service HOST (Default={RELIABLE_SERVICE_HOST})",
+    type=str,default=RELIABLE_SERVICE_HOST
+)
+networktools_group.add_argument(
+    '-rp','--reliable-service-port',help=f"Reliable service PORT (Default={RELIABLE_SERVICE_PORT})",
+    type=int,default=RELIABLE_SERVICE_PORT
+)
+
+webtools_group = parser.add_argument_group(title="WebTools",description="Configure WebTools")
+webtools_group.add_argument(
+    '-sp','--socks-proxy-url',help=f"Socks-Proxy-URL (Default={PROXY_URL})",
+    type=str,default=PROXY_URL
+)
+
 args = parser.parse_args()
+#######
+
 
 # Logger
-logger = LOGGER(timezone_name=TIMEZONE_NAME,logger_filedir=LOGGER_FILEDIR)
+logger = LOGGER(timezone_name=args.timezone,logger_filedir=args.logger_filedir)
 # Person-Database
 person_db = PERSON_DATABASE(
     db_host=PERSON_DB_HOST,db_pwd=PERSON_DB_PWD,db_username=PERSON_DB_USER,db_name=PERSON_DB_NAME,
@@ -115,9 +150,9 @@ person_db = PERSON_DATABASE(
 webtools = WEBTOOLS(
     logger=logger,
     proxies={
-        'http':PROXIE_URL,
-        'https':PROXIE_URL,
-        'socks5':PROXIE_URL
+        'http':args.socks_proxy_url,
+        'https':args.socks_proxy_url,
+        'socks5':args.socks_proxy_url
     }
 )
 # WifiTools
@@ -126,6 +161,12 @@ wifitools = WIFITOOLS(
 )
 # NetworkTools
 networktools = NETWORKTOOLS(
+    logger=logger,
+    reliable_service_host=args.reliable_service_host,
+    reliable_service_port=args.reliable_service_port
+)
+# SpeechRecognizer
+speech_recognizer = SPEECH_RECOGNIZER(
     logger=logger
 )
 

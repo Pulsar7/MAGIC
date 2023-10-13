@@ -80,12 +80,12 @@ class LOGGER():
             self.write_in_logger_file(log=msg)
             
     def error(self,msg:str,write_in_file:bool=True) -> None:
-        print(self.get_now()+f.WHITE+"["+f.RED+"ERROR"+f.WHITE+"] "+f.LIGHTRED_EX+msg)
+        print(self.get_now()+f.WHITE+"["+f.RED+"ERROR"+f.WHITE+"] "+f.LIGHTRED_EX+msg+f.RESET)
         if write_in_file == True:
             self.write_in_logger_file(log=msg,log_type="error")
     
     def warning(self,msg:str,write_in_file:bool=True) -> None:
-        print(self.get_now()+f.WHITE+"["+f.YELLOW+"WARNING"+f.WHITE+"] "+f.YELLOW+msg)
+        print(self.get_now()+f.WHITE+"["+f.YELLOW+"WARNING"+f.WHITE+"] "+f.YELLOW+msg+f.RESET)
         if write_in_file == True:
             self.write_in_logger_file(log=msg,log_type="warning")
         
@@ -93,10 +93,22 @@ class LOGGER():
         if len(msg) > 0:
             print(f.LIGHTGREEN_EX+msg+f.RESET)
         else:
-            print(f.LIGHTBLACK_EX+"O.K."+f.RESET)
+            print(f.LIGHTGREEN_EX+"O.K."+f.RESET)
             
     def failed(self,msg:str="") -> None:
         if len(msg) > 0:
             print(f.LIGHTRED_EX+msg+f.RESET)
         else:
             print(f.LIGHTRED_EX+"FAILED"+f.RESET)
+            
+    def found(self,msg:str,brackets_text:str="+",write_in_file:bool=True) -> None:
+        """_summary_
+
+        Args:
+            msg (str): The output-msg
+            brackets_text (str, optional): Object before message. Defaults to "+".
+            write_in_file (bool, optional): Write in LOG-File. Defaults to True.
+        """
+        print(self.get_now()+f.WHITE+"["+f.LIGHTBLUE_EX+brackets_text+f.WHITE+"] "+f.WHITE+msg+f.RESET)
+        if write_in_file == True:
+            self.write_in_logger_file(log=msg) # LOG as 'info'

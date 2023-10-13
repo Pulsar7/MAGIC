@@ -7,7 +7,16 @@
 <h2>Table of contents</h2>
 
 - [Explanation](#explanation)
+- [Usage](#usage)
 
 ## Explanation
 
 
+
+## Usage
+
+    chmod +x run.sh && sudo bash run.sh
+
+If you need an overview of the program-parameters, type:
+
+    bash run.sh --help

@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-File: wifi_tools.py
+File: speech_recognizer.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
-# from scapy.all import (Ether,ARP)
 
-
-class WIFITOOLS():
+class SPEECH_RECOGNIZER():
     def __init__(self,logger) -> None:
         (self.logger) = (logger)
-
+    
+    
     

@@ -6,3 +6,4 @@ colorama==0.4.4
 requests==2.31.0
 fake_headers==1.0.2
 scapy==2.5.0 # network-package manipulation
+psutil==5.9.0 # process & system monitoring

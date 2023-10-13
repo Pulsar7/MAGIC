@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ###### Loading values from the .env-File ######
 
-### Speak
+### Speech-Recognition
 
 
 ### Person-Database
@@ -27,5 +27,9 @@ LOGGER_FILEDIR:str = os.environ.get("LOGGER_FILEDIR")
 TIMEZONE_NAME:str = os.environ.get("TIMEZONE_NAME")
 
 ### WebTools
-PROXIE_URL:str = os.environ.get("PROXIE_URL")
+PROXY_URL:str = os.environ.get("PROXIE_URL")
+
+### NetworkTools
+RELIABLE_SERVICE_HOST:str = os.environ.get("RELIABLE_SERVICE_HOST")
+RELIABLE_SERVICE_PORT:int = os.environ.get("RELIABLE_SERVICE_PORT")
 
