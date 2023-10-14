@@ -29,6 +29,16 @@ class MAGIC():
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
         self.running:bool = True
+        self.COMMANDS:dict = { ################################ ?
+            'help': {
+                'possible_commands': ["hilfe","help me"],
+                'desrc': "Shows all possible commands"
+            },
+            'exit': {
+                'possible_commands': ["close","quit"],
+                'descr': "Closes the program"
+            }
+        }
         #
         
     def get_os(self) -> str:

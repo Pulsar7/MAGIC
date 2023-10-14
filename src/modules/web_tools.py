@@ -9,7 +9,6 @@ Python-Version: 3.10.12
 import requests,fake_headers
 
 
-
 class WEBTOOLS():
     def __init__(self,logger,proxies:dict) -> None:
         (self.logger) = (logger)
@@ -22,8 +21,29 @@ class WEBTOOLS():
         return session
     
     def get(self,url:str,use_proxy:bool=False) -> tuple((bool,object)):
+        """HTTP-GET-Request with the 'requests' module
+
+        Returns:
+            tuple((bool,object)): Returns a status (if an exception occured or not) and the requests-response
+        """
         try:
             session = self.create_new_session(use_proxy)
-            return (True,)
-        except Exception as error:
-            return (False,str(error))
+            resp = session.get(url)
+            session.close()
+            return (True,resp)
+        except Exception as _error:
+            return (False,str(_error))
+        
+    def post(self,url:str,data:dict,use_proxy:bool=False) -> tuple((bool,object)):
+        """HTTP-POST-Request with the 'requests' module
+
+        Returns:
+            tuple((bool,object)): Returns a status (if an exception occured or not) and the requests-response
+        """
+        try:
+            session = self.create_new_session(use_proxy)
+            resp = session.post(url=url,data=data)
+            session.close()
+            return (True,resp)
+        except Exception as _error:
+            return (False,str(_error))

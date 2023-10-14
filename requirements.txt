@@ -11,4 +11,4 @@ pyaudio==0.2.13 # convert the audio input into text
 pocketsphinx==5.0.2 # convert the audio input into text
 gtts==2.4.0 # Google-Text-To-Speech
 playsound==1.3.0
-pydub # to adjust speed of MP3-File
+pydub==0.25.1 # to adjust speed of MP3-File (Audio-Manipulator)
