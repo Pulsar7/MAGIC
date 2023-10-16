@@ -18,13 +18,14 @@ from src.modules.wifi_tools import WIFITOOLS
 from src.modules.network_tools import NETWORKTOOLS
 from src.modules.speech_recognizer import SPEECH_RECOGNIZER
 from src.modules.speaker import SPEAKER
+from src.modules.calculator import CALCULATOR
 #
 
 
 class MAGIC():
-    def __init__(self,logger:LOGGER,person_db:PERSON_DATABASE,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool,speaker:SPEAKER) -> None:
+    def __init__(self,logger:LOGGER,person_db:PERSON_DATABASE,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool,speaker:SPEAKER,calc:CALCULATOR) -> None:
         (self.logger,self.person_db,self.webtools,
-            self.wifitools,self.networktools,self.speech_recognizer,self.speaker) = (logger,person_db,webtools,wifitools,networktools,speech_recognizer,speaker)
+            self.wifitools,self.networktools,self.speech_recognizer,self.speaker,self.calc) = (logger,person_db,webtools,wifitools,networktools,speech_recognizer,speaker,calc)
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
@@ -107,7 +108,7 @@ class MAGIC():
         """
             The RUN-Method where the program starts.
         """
-        self.clear_screen()
+        # self.clear_screen()
         self.logger.info("Started.")
         self.logger.info(f"Running on a {self.get_os()}-System ({os.name})")
         start:float = time.time()
@@ -166,7 +167,7 @@ class MAGIC():
         self.logger.info(f"Closed. (Runtime={time.time()-start} Seconds)")
         self.person_db.close_conn()
         
-        
+
 
 ####### ArgumentParser
 parser = argparse.ArgumentParser(description="M.A.G.I.C.")
@@ -243,6 +244,10 @@ networktools = NETWORKTOOLS(
 speech_recognizer = SPEECH_RECOGNIZER(
     logger=logger
 )
+# Calculator
+calc = CALCULATOR(
+    logger=logger
+)
 
 if __name__ == '__main__':
     magic = MAGIC(
@@ -253,6 +258,7 @@ if __name__ == '__main__':
         networktools=networktools,
         speech_recognizer=speech_recognizer,
         use_speech_recognition=not args.without_speech_recognition,
-        speaker=speaker
+        speaker=speaker,
+        calc=calc
     )
     magic.run()

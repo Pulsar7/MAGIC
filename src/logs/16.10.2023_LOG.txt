@@ -78,3 +78,11 @@
 (<16.10.2023> 22:1:0) [INFO] Created all 1 tables
 (<16.10.2023> 22:1:5) [INFO] Closed. (Runtime=10.276023864746094 Seconds)
 (<16.10.2023> 22:1:5) [INFO] Closed PersonDatabase-Connection
+(<16.10.2023> 22:42:26) [INFO] Started.
+(<16.10.2023> 22:42:26) [INFO] Running on a Unix-Based-System (posix)
+(<16.10.2023> 22:42:26) [INFO] Started Complete-Checkup
+(<16.10.2023> 22:42:26) [INFO] I can register 3 available interfaces
+(<16.10.2023> 22:42:26) [INFO] Checking the internet-connection-availablity
+(<16.10.2023> 22:42:26) [INFO] Successfully tested the internet-connection at 'www.google.de:80'
+(<16.10.2023> 22:42:26) [INFO] Check PersonDB-Filepath
+(<16.10.2023> 22:42:26) [INFO] Checked all services
