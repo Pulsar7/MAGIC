@@ -11,6 +11,7 @@
 - [Speech Recognition](#speech-recognition)
 - [Text-To-Speech](#text-to-speech)
 - [Person-Database](#person-database)
+- [Ctypes](#ctypes)
 
 ## Explanation
 
@@ -44,3 +45,8 @@ Because of the neccessity of a functional internet-connection while using **gTTS
 ## Person-Database
 
 The **Person-Database** uses a *SQLITE3-Database* which is stored in the `src/dbs/`-Folder.
+
+
+## Ctypes
+
+In order to compute more efficient, `ctypes` is implemented in the *calculator*.
