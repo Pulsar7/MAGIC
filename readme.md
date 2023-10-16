@@ -9,6 +9,7 @@
 - [Explanation](#explanation)
 - [Usage](#usage)
 - [Speech Recognition](#speech-recognition)
+- [Text-To-Speech](#text-to-speech)
 - [Person-Database](#person-database)
 
 ## Explanation
@@ -31,7 +32,15 @@ You can deactivate the **Speech-Recognition** by running the script like this:
     bash run.py -ws
 
 
+## Text-To-Speech
+
+The Program uses two TTS-Modules from python:
+
+- [Google-Text-To-Speech](https://codelabs.developers.google.com/codelabs/cloud-text-speech-python3/#0)
+- [pyttsx3](https://pypi.org/project/pyttsx3/)
+
+Because of the neccessity of a functional internet-connection while using **gTTS**, there is also another *Offline-Version* - way worse of course - that's using the python-module **pyttsx3**. 
+
 ## Person-Database
 
 The **Person-Database** uses a *SQLITE3-Database* which is stored in the `src/dbs/`-Folder.
-

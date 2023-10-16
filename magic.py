@@ -114,6 +114,8 @@ class MAGIC():
         if self.check_all(): # All tools/services are probably good.
             self.logger.info("Checked all services",say=True,cli_output=False)
             if self.network_availability == False:
+                self.logger.warning("Cannot use Google-Text-To-Seech without an internet-connection",say=True)
+                self.speaker.use_offline_tts = True # Not using GTTS
                 self.logger.warning("Cannot use Speech-Recognition without an internet-connection!",say=True)
                 self.use_speech_recognition = False
             elif self.use_speech_recognition == False:
@@ -146,8 +148,9 @@ class MAGIC():
                                 errors += 1
                         else:
                             user_input:str = self.logger.colored_input()
-                        self.logger.info(f"Sorry but I didn't understand '{user_input}'",say=True,cli_output=False,write_in_file=False)
+                        
                         ###############################################################
+                        self.logger.info(f"Sorry but I didn't understand '{user_input}'",say=True,cli_output=False,write_in_file=False)
                         self.running = False #######!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         ###############################################################
                         #### HANDLE USER INPUT!
