@@ -49,4 +49,4 @@ The **Person-Database** uses a *SQLITE3-Database* which is stored in the `src/db
 
 ## Ctypes
 
-In order to compute more efficient, `ctypes` is implemented in the *calculator*.
+In order to compute more efficient, `ctypes` has been implemented in the *calculator*.
