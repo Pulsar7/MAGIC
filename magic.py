@@ -9,7 +9,6 @@ Python-Version: 3.10.12
 @Multi-functional Assistant for General Information and Control
 """
 import os,time,argparse
-# own modules
 from settings import * # load settings for database,logger,...
 from src.modules.logger import LOGGER
 from src.modules.person_database import PERSON_DATABASE
@@ -19,25 +18,33 @@ from src.modules.network_tools import NETWORKTOOLS
 from src.modules.speech_recognizer import SPEECH_RECOGNIZER
 from src.modules.speaker import SPEAKER
 from src.modules.calculator import CALCULATOR
-#
 
 
 class MAGIC():
     def __init__(self,logger:LOGGER,person_db:PERSON_DATABASE,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool,speaker:SPEAKER,calc:CALCULATOR) -> None:
-        (self.logger,self.person_db,self.webtools,
-            self.wifitools,self.networktools,self.speech_recognizer,self.speaker,self.calc) = (logger,person_db,webtools,wifitools,networktools,speech_recognizer,speaker,calc)
+        self.logger = logger
+        self.person_db = person_db
+        self.webtools = webtools
+        self.wifitools = wifitools
+        self.networktools = networktools
+        self.speech_recognizer = speech_recognizer
+        self.speaker = speaker
+        self.calc = calc
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
         self.running:bool = True
-        self.COMMANDS:dict = { ################################ ?
+        self.COMMANDS:dict = {
             'help': {
-                'possible_commands': ["hilfe","help me"],
-                'desrc': "Shows all possible commands"
+                'possible_commands': ["help me"],
+                'descr': "Shows all possible commands",
+                'function': self.show_help
             },
+            
             'exit': {
                 'possible_commands': ["close","quit"],
-                'descr': "Closes the program"
+                'descr': "Closes the program",
+                'function': self.close_program
             }
         }
         #
@@ -101,14 +108,53 @@ class MAGIC():
             self.logger.failed()
             self.logger.error("Please check the Person-Database filepath!")
             self.running = False
+        self.logger.info("Finished Complete-Checkup",write_in_file=False)
         self.logger.console.rule()
         return True
+    
+    ###### Command - Functions ######
+    
+    def close_program(self) -> str:
+        """Closes the program.
+
+        Returns:
+            str: Returns a response as String.
+        """
+        self.running = False
+        return "User sent the exit-signal."
+    
+    def show_help(self) -> str:
+        """Shows help-message
+
+        Returns:
+            str: Returns a response as String. 
+        """
+        self.logger.console.print(self.COMMANDS)
+        return "Showed all available commands."
+    
+    ######                     ######
+    
+    def handle_user_input(self,user_input:str) -> tuple((bool,str)):
+        try:
+            response:str = f"Sorry, but I don't understand '{user_input}'"
+            did_you_mean_commands:list[str] = []
+            user_input = user_input.lower().strip()
+            for command in self.COMMANDS:
+                if user_input == command or user_input in self.COMMANDS[command]['possible_commands']:
+                    response = self.COMMANDS[command]['function']()
+                elif command[:len(command)-2] in user_input:
+                    did_you_mean_commands.append(command)
+            if len(did_you_mean_commands) > 0:
+                response = "Did you mean: "+",".join(did_you_mean_commands)+"?"
+            return (True,response)
+        except Exception as _error:
+            return (False,str(_error))
     
     def run(self) -> None:
         """
             The RUN-Method where the program starts.
         """
-        # self.clear_screen()
+        self.clear_screen()
         self.logger.info("Started.")
         self.logger.info(f"Running on a {self.get_os()}-System ({os.name})")
         start:float = time.time()
@@ -149,12 +195,12 @@ class MAGIC():
                                 errors += 1
                         else:
                             user_input:str = self.logger.colored_input()
-                        
-                        ###############################################################
-                        self.logger.info(f"Sorry but I didn't understand '{user_input}'",say=True,cli_output=False,write_in_file=False)
-                        self.running = False #######!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        ###############################################################
-                        #### HANDLE USER INPUT!
+                        (status,resp) = self.handle_user_input(user_input=user_input)
+                        if status == True and len(resp) > 0:
+                            self.logger.info(resp)
+                        else:
+                            errors += 1
+                            self.logger.error(f"An error occured while trying to process user-input: {resp}",say=True)
                         if errors >= 5:
                             self.logger.error("Too many errors!",say=True)
                             self.running = False
@@ -249,7 +295,7 @@ calc = CALCULATOR(
     logger=logger
 )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     magic = MAGIC(
         person_db=person_db,
         logger=logger,
