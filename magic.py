@@ -135,14 +135,24 @@ class MAGIC():
     ######                     ######
     
     def handle_user_input(self,user_input:str) -> tuple((bool,str)):
+        """Checks if the user-input is a valid command.
+
+        Args:
+            user_input (str): The user-input (from keyboard or voice)
+
+        Returns:
+            tuple((bool,str)): Returns a response (info or error).
+        """
         try:
             response:str = f"Sorry, but I don't understand '{user_input}'"
             did_you_mean_commands:list[str] = []
             user_input = user_input.lower().strip()
             for command in self.COMMANDS:
                 if user_input == command or user_input in self.COMMANDS[command]['possible_commands']:
+                    # Checks if the user_input matches exactly a valid command
                     response = self.COMMANDS[command]['function']()
                 elif command[:len(command)-2] in user_input:
+                    # Checks if the user_input matches partly one or more valid command(s)
                     did_you_mean_commands.append(command)
             if len(did_you_mean_commands) > 0:
                 response = "Did you mean: "+",".join(did_you_mean_commands)+"?"
@@ -200,7 +210,8 @@ class MAGIC():
                             self.logger.info(resp)
                         else:
                             errors += 1
-                            self.logger.error(f"An error occured while trying to process user-input: {resp}",say=True)
+                            self.logger.error("An error occured while trying to process user-input",say=True)
+                            self.logger.error(resp) # If the error is complex, the text-to-speech-engine shouldn't say that.
                         if errors >= 5:
                             self.logger.error("Too many errors!",say=True)
                             self.running = False
