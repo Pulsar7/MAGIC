@@ -21,7 +21,7 @@ class CALCULATOR():
     def check_if_number_is_prime_number(self,number:int) -> bool:
         myc = ctypes.CDLL(self.c_files['check_if_prime_number'])
         if myc.check(number) == 1:
-            return True;
+            return True
         else:
-            return False;
+            return False
     

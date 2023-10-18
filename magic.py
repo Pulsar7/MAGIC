@@ -11,21 +11,21 @@ Python-Version: 3.10.12
 import os,time,argparse
 from settings import * # load settings for database,logger,...
 from src.modules.logger import LOGGER
-from src.modules.person_database import PERSON_DATABASE
-from src.modules.web_tools import WEBTOOLS
-from src.modules.wifi_tools import WIFITOOLS
-from src.modules.network_tools import NETWORKTOOLS
-from src.modules.speech_recognizer import SPEECH_RECOGNIZER
+from src.modules.person_database import PersonDatabase
+from src.modules.web_tools import WebTools
+from src.modules.wifi_tools import WifiTools
+from src.modules.network_tools import NetworkTools
+from src.modules.speech_recognizer import SpeechRecognizer
 from src.modules.speaker import SPEAKER
 from src.modules.calculator import CALCULATOR
 
 
 class MAGIC():
-    def __init__(self,logger:LOGGER,person_db:PERSON_DATABASE,webtools:WEBTOOLS,wifitools:WIFITOOLS,networktools:NETWORKTOOLS,speech_recognizer:SPEECH_RECOGNIZER,use_speech_recognition:bool,speaker:SPEAKER,calc:CALCULATOR) -> None:
+    def __init__(self,logger:LOGGER,person_db:PersonDatabase,web_tools:WebTools,wifi_tools:WifiTools,networktools:NetworkTools,speech_recognizer:SpeechRecognizer,use_speech_recognition:bool,speaker:SPEAKER,calc:CALCULATOR) -> None:
         self.logger = logger
         self.person_db = person_db
-        self.webtools = webtools
-        self.wifitools = wifitools
+        self.web_tools = web_tools
+        self.wifi_tools = wifi_tools
         self.networktools = networktools
         self.speech_recognizer = speech_recognizer
         self.speaker = speaker
@@ -171,7 +171,7 @@ class MAGIC():
         if self.check_all(): # All tools/services are probably good.
             self.logger.info("Checked all services",say=True,cli_output=False)
             if self.network_availability == False:
-                self.logger.warning("Cannot use Google-Text-To-Seech without an internet-connection",say=True)
+                self.logger.warning("Cannot use Google-Text-To-Speech without an internet-connection",say=True)
                 self.speaker.use_offline_tts = True # Not using GTTS
                 self.logger.warning("Cannot use Speech-Recognition without an internet-connection!",say=True)
                 self.use_speech_recognition = False
@@ -197,7 +197,7 @@ class MAGIC():
                 try:
                     try:
                         if self.use_speech_recognition == True:
-                            (status,text) = self.speech_recognizer.capture_microphone()
+                            (status,text) = self.SpeechRecognizer.capture_microphone()
                             if status == True:
                                 user_input = text
                             else:
@@ -260,8 +260,8 @@ networktools_group.add_argument(
     type=int,default=RELIABLE_SERVICE_PORT
 )
 
-webtools_group = parser.add_argument_group(title="WebTools",description="Configure WebTools")
-webtools_group.add_argument(
+WebTools_group = parser.add_argument_group(title="WebTools",description="Configure WebTools")
+WebTools_group.add_argument(
     '-sp','--socks-proxy-url',help=f"Socks-Proxy-URL (Default={PROXY_URL})",
     type=str,default=PROXY_URL
 )
@@ -274,12 +274,12 @@ speaker = SPEAKER()
 # Logger
 logger = LOGGER(timezone_name=args.timezone,logger_filedir=args.logger_filedir,speaker=speaker,speak_to_me_status=args.speak_to_me)
 # Person-Database
-person_db = PERSON_DATABASE(
+person_db = PersonDatabase(
     db_filepath=PERSON_DB_FILEPATH,
     logger=logger
 )
 # WebTools
-webtools = WEBTOOLS(
+web_tools = WebTools(
     logger=logger,
     proxies={
         'http':args.socks_proxy_url,
@@ -288,17 +288,17 @@ webtools = WEBTOOLS(
     }
 )
 # WifiTools
-wifitools = WIFITOOLS(
+wifi_tools = WifiTools(
     logger=logger
 )
 # NetworkTools
-networktools = NETWORKTOOLS(
+networktools = NetworkTools(
     logger=logger,
     reliable_service_host=args.reliable_service_host,
     reliable_service_port=args.reliable_service_port
 )
 # SpeechRecognizer
-speech_recognizer = SPEECH_RECOGNIZER(
+speech_recognizer = SpeechRecognizer(
     logger=logger
 )
 # Calculator
@@ -310,8 +310,8 @@ if __name__ == "__main__":
     magic = MAGIC(
         person_db=person_db,
         logger=logger,
-        webtools=webtools,
-        wifitools=wifitools,
+        web_tools=web_tools,
+        wifi_tools=wifi_tools,
         networktools=networktools,
         speech_recognizer=speech_recognizer,
         use_speech_recognition=not args.without_speech_recognition,

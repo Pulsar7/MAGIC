@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-File: speech_recognizer.py
+File: SpeechRecognizer.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
@@ -10,7 +10,7 @@ import speech_recognition as sr
 import pyaudio
 
 
-class SPEECH_RECOGNIZER():
+class SpeechRecognizer():
     def __init__(self,logger) -> None:
         (self.logger) = (logger)
         self.recognizer = sr.Recognizer()

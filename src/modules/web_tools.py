@@ -9,7 +9,7 @@ Python-Version: 3.10.12
 import requests,fake_headers
 
 
-class WEBTOOLS():
+class WebTools():
     def __init__(self,logger,proxies:dict) -> None:
         (self.logger) = (logger)
         self.proxies:dict = proxies

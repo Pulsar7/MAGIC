@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-File: person_database.py
+File: PersonDatabase.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
 import sqlite3,random,string
 
 
-class PERSON_DATABASE():
+class PersonDatabase():
     def __init__(self,logger,db_filepath:str) -> None:
         (self.logger,self.db_filepath) = (logger,db_filepath)
         #

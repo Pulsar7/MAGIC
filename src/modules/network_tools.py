@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-File: network_tools.py
+File: NetworkTools.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
@@ -10,7 +10,7 @@ import socket,psutil,requests
 # from scapy.all import (EtherDA)
 
 
-class NETWORKTOOLS():
+class NetworkTools():
     def __init__(self,logger,reliable_service_host:str,reliable_service_port:int) -> None:
         (self.logger,self.reliable_service_host,self.reliable_service_port) = (logger,reliable_service_host,reliable_service_port)
         
