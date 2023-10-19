@@ -15,7 +15,7 @@ class SpeechRecognizer():
         (self.logger) = (logger)
         self.recognizer = sr.Recognizer()
     
-    def capture_microphone(self) -> tuple((bool,str)):
+    def capture_microphone(self) -> tuple[bool, str]:
         """Capturing the microphone in order to convert it into text. (Using Google-API)
 
         Raises:
@@ -30,7 +30,7 @@ class SpeechRecognizer():
             with sr.Microphone(device_index=0) as source:
                 audio = self.recognizer.listen(source)
             try:
-                recognized_text = self.recognizer.recognize_google(audio)
+                recognized_text = str(self.recognizer.recognize_google(audio))
             except sr.UnknownValueError:
                 raise Exception("Google Web Speech API could not understand the audio.")
             except sr.RequestError as e:

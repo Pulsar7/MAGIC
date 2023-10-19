@@ -18,7 +18,7 @@ class NetworkTools():
         interfaces = psutil.net_if_addrs()
         return interfaces
     
-    def check_internet_connection_availability(self) -> tuple((bool,str)):
+    def check_internet_connection_availability(self) -> tuple[bool, str]:
         """Check the internet-connection availablity on current device
 
         Returns:
@@ -67,6 +67,7 @@ class NetworkTools():
             return "IPv4"
         elif ":" in ip_addr:
             return "IPv6"
+        return "Invalid"
         
     def search_for_open_ports(self,ip_addr:str) -> dict:
         report:dict = {

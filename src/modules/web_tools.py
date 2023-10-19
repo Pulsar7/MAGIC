@@ -16,11 +16,12 @@ class WebTools():
     
     def create_new_session(self,use_proxy:bool) -> requests.Session:
         session = requests.Session()
-        session.proxies = self.proxies
-        session.headers = fake_headers.firefox
+        if use_proxy:
+            session.proxies = self.proxies
+        # session.headers = fake_headers.firefox ! NO FAKE HEADERS
         return session
     
-    def get(self,url:str,use_proxy:bool=False) -> tuple((bool,object)):
+    def get(self,url:str,use_proxy:bool=False) -> tuple[bool, object]:
         """HTTP-GET-Request with the 'requests' module
 
         Returns:
@@ -34,7 +35,7 @@ class WebTools():
         except Exception as _error:
             return (False,str(_error))
         
-    def post(self,url:str,data:dict,use_proxy:bool=False) -> tuple((bool,object)):
+    def post(self,url:str,data:dict,use_proxy:bool=False) -> tuple[bool, object]:
         """HTTP-POST-Request with the 'requests' module
 
         Returns:

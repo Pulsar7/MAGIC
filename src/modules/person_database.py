@@ -22,8 +22,6 @@ class PersonDatabase():
                 ]
             }
         }
-        self.conn = ""
-        self.cursor = ""
         self.person_id_len:int = 35
         self.persons_table_name:str = list(self.tables.keys())[0]
         #
@@ -38,12 +36,15 @@ class PersonDatabase():
     
     def create_connection(self) -> None:
         self.conn = sqlite3.connect(self.db_filepath)
-        self.cursor = self.conn.cursor()    
+        self.cursor = self.conn.cursor()
         
     def close_conn(self) -> None:
         try:
-            self.conn.close()
-            self.logger.info("Closed PersonDatabase-Connection",say=True)
+            if self.conn:
+                self.conn.close()
+                self.logger.info("Closed PersonDatabase-Connection",say=True)
+            else:
+                raise Exception("Connection-Value is not defined.")
         except Exception as _e:
             self.logger.error(f"Couldn't close PersonDB-connection: {str(_e)}")
         
@@ -68,7 +69,7 @@ class PersonDatabase():
         return generated_id
             
     
-    def create_tables(self) -> tuple((bool,str)):
+    def create_tables(self) -> tuple[bool, str]:
         """Create all tables.
 
         Returns:

@@ -18,6 +18,7 @@ from src.modules.network_tools import NetworkTools
 from src.modules.speech_recognizer import SpeechRecognizer
 from src.modules.speaker import SPEAKER
 from src.modules.calculator import CALCULATOR
+from src.modules.input_handler import UserInputProcessor
 
 
 class MAGIC():
@@ -30,6 +31,7 @@ class MAGIC():
         self.speech_recognizer = speech_recognizer
         self.speaker = speaker
         self.calc = calc
+        self.user_input_processor = UserInputProcessor(logger=logger)
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
@@ -134,32 +136,6 @@ class MAGIC():
     
     ######                     ######
     
-    def handle_user_input(self,user_input:str) -> tuple((bool,str)):
-        """Checks if the user-input is a valid command.
-
-        Args:
-            user_input (str): The user-input (from keyboard or voice)
-
-        Returns:
-            tuple((bool,str)): Returns a response (info or error).
-        """
-        try:
-            response:str = f"Sorry, but I don't understand '{user_input}'"
-            did_you_mean_commands:list[str] = []
-            user_input = user_input.lower().strip()
-            for command in self.COMMANDS:
-                if user_input == command or user_input in self.COMMANDS[command]['possible_commands']:
-                    # Checks if the user_input matches exactly a valid command
-                    response = self.COMMANDS[command]['function']()
-                elif command[:len(command)-2] in user_input:
-                    # Checks if the user_input matches partly one or more valid command(s)
-                    did_you_mean_commands.append(command)
-            if len(did_you_mean_commands) > 0:
-                response = "Did you mean: "+",".join(did_you_mean_commands)+"?"
-            return (True,response)
-        except Exception as _error:
-            return (False,str(_error))
-    
     def run(self) -> None:
         """
             The RUN-Method where the program starts.
@@ -197,7 +173,7 @@ class MAGIC():
                 try:
                     try:
                         if self.use_speech_recognition == True:
-                            (status,text) = self.SpeechRecognizer.capture_microphone()
+                            (status,text) = self.speech_recognizer.capture_microphone()
                             if status == True:
                                 user_input = text
                             else:
@@ -205,7 +181,7 @@ class MAGIC():
                                 errors += 1
                         else:
                             user_input:str = self.logger.colored_input()
-                        (status,resp) = self.handle_user_input(user_input=user_input)
+                        (status,resp) = self.user_input_processor.process_text(text=user_input)
                         if status == True and len(resp) > 0:
                             self.logger.info(resp)
                         else:
