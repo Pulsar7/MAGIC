@@ -11,8 +11,9 @@ import socket,psutil,requests
 
 
 class NetworkTools():
-    def __init__(self,logger,reliable_service_host:str,reliable_service_port:int) -> None:
+    def __init__(self,logger,reliable_service_host:str,reliable_service_port:int,web_tools) -> None:
         (self.logger,self.reliable_service_host,self.reliable_service_port) = (logger,reliable_service_host,reliable_service_port)
+        self.web_tools = web_tools
         
     def get_available_interfaces(self) -> dict:
         interfaces = psutil.net_if_addrs()
@@ -29,11 +30,14 @@ class NetworkTools():
             result = sock.connect_ex((self.reliable_service_host,self.reliable_service_port))
             sock.close()
             if result == 0:
-                resp = requests.get("http://"+self.reliable_service_host+":"+str(self.reliable_service_port))
-                if resp.status_code == 200:
-                    return (True,f"Successfully tested the internet-connection at '{self.reliable_service_host}:{self.reliable_service_port}'")
+                (status,resp) = self.web_tools.get("http://"+self.reliable_service_host+":"+str(self.reliable_service_port))
+                if status == True:
+                    if resp.status_code == 200:
+                        return (True,f"Successfully tested the internet-connection at '{self.reliable_service_host}:{self.reliable_service_port}'")
+                    else:
+                        return (False,f"Received status-code '{resp.status_code}' while trying to access '{self.reliable_service_host}:{self.reliable_service_port}'")
                 else:
-                    return (False,f"Received status-code '{resp.status_code}' while trying to access '{self.reliable_service_host}:{self.reliable_service_port}'")
+                    return (False,f"An error occured while trying to access '{self.reliable_service_host}:{self.reliable_service_port}': {resp}")
             else:
                 return (False,f"Connection failed to: {self.reliable_service_host}:{self.reliable_service_port}")
         except Exception as e:

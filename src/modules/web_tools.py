@@ -10,9 +10,10 @@ import requests,fake_headers
 
 
 class WebTools():
-    def __init__(self,logger,proxies:dict) -> None:
+    def __init__(self,logger,proxies:dict,request_timeout:float) -> None:
         (self.logger) = (logger)
         self.proxies:dict = proxies
+        self.request_timeout:float = request_timeout
     
     def create_new_session(self,use_proxy:bool) -> requests.Session:
         session = requests.Session()
@@ -29,7 +30,7 @@ class WebTools():
         """
         try:
             session = self.create_new_session(use_proxy)
-            resp = session.get(url)
+            resp = session.get(url,timeout=self.request_timeout)
             session.close()
             return (True,resp)
         except Exception as _error:
@@ -48,3 +49,4 @@ class WebTools():
             return (True,resp)
         except Exception as _error:
             return (False,str(_error))
+        

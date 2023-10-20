@@ -6,7 +6,7 @@ File: logger.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
-import sys,pytz
+import sys,pytz,threading
 from datetime import datetime
 from colorama import (Fore as f,init)
 from rich import (console as cons)
@@ -79,7 +79,10 @@ class LOGGER():
         if write_in_file == True:
             self.write_in_logger_file(log=msg)
         if say == True and self.speak_to_me_status == True:
-            self.speaker.say(msg)
+            threading.Thread(
+                target=self.speaker.say, args=(msg,),
+                daemon=True #################################################### False?!
+            ).start()
             
     def error(self,msg:str,write_in_file:bool=True,say:bool=False,cli_output:bool=True) -> None:
         if cli_output == True:
@@ -87,7 +90,10 @@ class LOGGER():
         if write_in_file == True:
             self.write_in_logger_file(log=msg,log_type="error")
         if say == True and self.speak_to_me_status == True:
-            self.speaker.say("ERROR: "+msg)
+            threading.Thread(
+                target=self.speaker.say, args=(msg,),
+                daemon=True #################################################### False?!
+            ).start()
     
     def warning(self,msg:str,write_in_file:bool=True,say:bool=False,cli_output:bool=True) -> None:
         if cli_output == True:
@@ -95,7 +101,10 @@ class LOGGER():
         if write_in_file == True:
             self.write_in_logger_file(log=msg,log_type="warning")
         if say == True and self.speak_to_me_status == True:
-            self.speaker.say("WARNING: "+msg)
+            threading.Thread(
+                target=self.speaker.say, args=("WARNING: "+msg,),
+                daemon=True #################################################### False?!
+            ).start()
         
     def success(self,msg:str="") -> None:
         if len(msg) > 0:

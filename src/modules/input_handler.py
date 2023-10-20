@@ -6,7 +6,7 @@ File: input_handler.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
-
+import numpy
 
 
 class UserInputProcessor():
@@ -14,5 +14,4 @@ class UserInputProcessor():
         self.logger = logger
         
     def process_text(self,text:str) -> tuple[bool, str]:
-        
         return (False,"Hello")

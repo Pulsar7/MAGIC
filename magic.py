@@ -92,6 +92,7 @@ class MAGIC():
         for iface in available_interfaces:
             self.logger.found(msg=iface,write_in_file=False)
         # Check internet-connection
+        self.logger.info(f"Timeout for HTTP-GET and HTTP-POST requests: {self.web_tools.request_timeout} Seconds")
         self.logger.info("Checking the internet-connection-availablity",progress=True)
         (netw_avail_status,resp) = self.networktools.check_internet_connection_availability()
         if netw_avail_status:
@@ -102,6 +103,7 @@ class MAGIC():
             self.logger.failed()
             self.logger.error(resp)
             self.logger.warning("Looks like I have no available internet-connection!")
+            self.speaker.use_offline_tts = True # Not using GTTS
         # Check person-database
         self.logger.info("Check PersonDB-Filepath",progress=True)
         if self.person_db.check_db_filepath():
@@ -148,7 +150,6 @@ class MAGIC():
             self.logger.info("Checked all services",say=True,cli_output=False)
             if self.network_availability == False:
                 self.logger.warning("Cannot use Google-Text-To-Speech without an internet-connection",say=True)
-                self.speaker.use_offline_tts = True # Not using GTTS
                 self.logger.warning("Cannot use Speech-Recognition without an internet-connection!",say=True)
                 self.use_speech_recognition = False
             elif self.use_speech_recognition == False:
@@ -181,13 +182,14 @@ class MAGIC():
                                 errors += 1
                         else:
                             user_input:str = self.logger.colored_input()
-                        (status,resp) = self.user_input_processor.process_text(text=user_input)
-                        if status == True and len(resp) > 0:
-                            self.logger.info(resp)
-                        else:
-                            errors += 1
-                            self.logger.error("An error occured while trying to process user-input",say=True)
-                            self.logger.error(resp) # If the error is complex, the text-to-speech-engine shouldn't say that.
+                        if len(user_input) > 0:
+                            (status,resp) = self.user_input_processor.process_text(text=user_input)
+                            if status == True and len(resp) > 0:
+                                self.logger.info(resp)
+                            else:
+                                errors += 1
+                                self.logger.error("An error occured while trying to process user-input",say=True)
+                                self.logger.error(resp) # If the error is complex, the text-to-speech-engine shouldn't say that.
                         if errors >= 5:
                             self.logger.error("Too many errors!",say=True)
                             self.running = False
@@ -241,6 +243,10 @@ WebTools_group.add_argument(
     '-sp','--socks-proxy-url',help=f"Socks-Proxy-URL (Default={PROXY_URL})",
     type=str,default=PROXY_URL
 )
+WebTools_group.add_argument(
+    '-wt','--web-request-timeout',help=f"Timeout in seconds for HTTP-GET & HTTP-POST requests (Default={WEB_REQUEST_TIMEOUT})",
+    type=str,default=WEB_REQUEST_TIMEOUT
+)
 
 args = parser.parse_args()
 #######
@@ -261,7 +267,8 @@ web_tools = WebTools(
         'http':args.socks_proxy_url,
         'https':args.socks_proxy_url,
         'socks5':args.socks_proxy_url
-    }
+    },
+    request_timeout=args.web_request_timeout
 )
 # WifiTools
 wifi_tools = WifiTools(
@@ -271,7 +278,8 @@ wifi_tools = WifiTools(
 networktools = NetworkTools(
     logger=logger,
     reliable_service_host=args.reliable_service_host,
-    reliable_service_port=args.reliable_service_port
+    reliable_service_port=args.reliable_service_port,
+    web_tools=web_tools
 )
 # SpeechRecognizer
 speech_recognizer = SpeechRecognizer(

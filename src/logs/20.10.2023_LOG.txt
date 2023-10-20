@@ -1,0 +1,116 @@
+(<20.10.2023> 11:34:53) [INFO] Started.
+(<20.10.2023> 11:34:53) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 11:34:53) [INFO] Started Complete-Checkup
+(<20.10.2023> 11:34:53) [INFO] I can register 3 available interfaces
+(<20.10.2023> 11:34:53) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 11:37:3) [INFO] Successfully tested the internet-connection at 'www.google.de:80'
+(<20.10.2023> 11:37:3) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 11:37:3) [INFO] Checked all services
+(<20.10.2023> 11:37:5) [WARNING] Not using Speech-Recognition
+(<20.10.2023> 11:37:8) [INFO] Creating/Checking PersonDB-Tables
+(<20.10.2023> 11:37:8) [INFO] Created all 1 tables
+(<20.10.2023> 11:37:39) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 11:37:43) [ERROR] Hello
+(<20.10.2023> 11:37:50) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 11:37:54) [ERROR] Hello
+(<20.10.2023> 11:39:41) [ERROR] An error occured: Detected Keyboard-Interruption
+(<20.10.2023> 11:39:41) [INFO] Closed. (Runtime=288.2086730003357 Seconds)
+(<20.10.2023> 11:39:41) [INFO] Closed PersonDatabase-Connection
+(<20.10.2023> 11:39:48) [INFO] Started.
+(<20.10.2023> 11:39:48) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 11:39:48) [INFO] Started Complete-Checkup
+(<20.10.2023> 11:39:48) [INFO] I can register 3 available interfaces
+(<20.10.2023> 11:39:48) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 11:53:9) [INFO] Started.
+(<20.10.2023> 11:53:9) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 11:53:9) [INFO] Started Complete-Checkup
+(<20.10.2023> 11:53:9) [INFO] I can register 3 available interfaces
+(<20.10.2023> 11:53:9) [INFO] Timeout for HTTP-GET and HTTP-POST requets: 10.0 Seconds
+(<20.10.2023> 11:53:9) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 11:53:50) [INFO] Started.
+(<20.10.2023> 11:53:50) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 11:53:50) [INFO] Started Complete-Checkup
+(<20.10.2023> 11:53:50) [INFO] I can register 3 available interfaces
+(<20.10.2023> 11:53:50) [INFO] Timeout for HTTP-GET and HTTP-POST requests: 10.0 Seconds
+(<20.10.2023> 11:53:50) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 11:54:0) [ERROR] 'tuple' object has no attribute 'status_code'
+(<20.10.2023> 11:54:0) [WARNING] Looks like I have no available internet-connection!
+(<20.10.2023> 11:54:0) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 11:54:0) [INFO] Checked all services
+(<20.10.2023> 11:54:0) [WARNING] Cannot use Google-Text-To-Speech without an internet-connection
+(<20.10.2023> 11:58:5) [INFO] Started.
+(<20.10.2023> 11:58:5) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 11:58:5) [INFO] Started Complete-Checkup
+(<20.10.2023> 11:58:5) [INFO] I can register 3 available interfaces
+(<20.10.2023> 11:58:5) [INFO] Timeout for HTTP-GET and HTTP-POST requests: 10.0 Seconds
+(<20.10.2023> 11:58:5) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 11:58:15) [ERROR] 'tuple' object has no attribute 'status_code'
+(<20.10.2023> 11:58:15) [WARNING] Looks like I have no available internet-connection!
+(<20.10.2023> 11:58:15) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 11:58:15) [INFO] Checked all services
+(<20.10.2023> 11:58:15) [WARNING] Cannot use Google-Text-To-Speech without an internet-connection
+(<20.10.2023> 11:58:22) [WARNING] Cannot use Speech-Recognition without an internet-connection!
+(<20.10.2023> 11:58:24) [INFO] Creating/Checking PersonDB-Tables
+(<20.10.2023> 11:58:24) [INFO] Created all 1 tables
+(<20.10.2023> 11:58:26) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 11:58:27) [ERROR] Hello
+(<20.10.2023> 11:58:28) [ERROR] An error occured: Detected Keyboard-Interruption
+(<20.10.2023> 11:58:28) [INFO] Closed. (Runtime=22.81484079360962 Seconds)
+(<20.10.2023> 11:58:28) [INFO] Closed PersonDatabase-Connection
+(<20.10.2023> 12:1:41) [INFO] Started.
+(<20.10.2023> 12:1:41) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 12:1:41) [INFO] Started Complete-Checkup
+(<20.10.2023> 12:1:41) [INFO] I can register 3 available interfaces
+(<20.10.2023> 12:1:41) [INFO] Timeout for HTTP-GET and HTTP-POST requests: 10.0 Seconds
+(<20.10.2023> 12:1:41) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 12:1:52) [ERROR] 'tuple' object has no attribute 'status_code'
+(<20.10.2023> 12:1:52) [WARNING] Looks like I have no available internet-connection!
+(<20.10.2023> 12:1:52) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 12:1:52) [INFO] Checked all services
+(<20.10.2023> 12:1:52) [WARNING] Cannot use Google-Text-To-Speech without an internet-connection
+(<20.10.2023> 12:1:52) [WARNING] Cannot use Speech-Recognition without an internet-connection!
+(<20.10.2023> 12:1:52) [INFO] Creating/Checking PersonDB-Tables
+(<20.10.2023> 12:1:52) [INFO] Created all 1 tables
+(<20.10.2023> 12:2:9) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 12:2:9) [ERROR] Hello
+(<20.10.2023> 12:2:14) [ERROR] An error occured: Detected Keyboard-Interruption
+(<20.10.2023> 12:2:14) [INFO] Closed. (Runtime=32.5560040473938 Seconds)
+(<20.10.2023> 12:2:14) [INFO] Closed PersonDatabase-Connection
+(<20.10.2023> 12:7:27) [INFO] Started.
+(<20.10.2023> 12:7:27) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 12:7:27) [INFO] Started Complete-Checkup
+(<20.10.2023> 12:7:27) [INFO] I can register 3 available interfaces
+(<20.10.2023> 12:7:27) [INFO] Timeout for HTTP-GET and HTTP-POST requests: 10.0 Seconds
+(<20.10.2023> 12:7:27) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 12:7:37) [INFO] Successfully tested the internet-connection at 'www.google.de:80'
+(<20.10.2023> 12:7:37) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 12:7:37) [INFO] Checked all services
+(<20.10.2023> 12:7:37) [WARNING] Not using Speech-Recognition
+(<20.10.2023> 12:7:37) [INFO] Creating/Checking PersonDB-Tables
+(<20.10.2023> 12:7:37) [INFO] Created all 1 tables
+(<20.10.2023> 12:7:47) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 12:7:47) [ERROR] Hello
+(<20.10.2023> 12:7:52) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 12:7:52) [ERROR] Hello
+(<20.10.2023> 12:7:59) [ERROR] An error occured: Detected Keyboard-Interruption
+(<20.10.2023> 12:7:59) [INFO] Closed. (Runtime=32.11515712738037 Seconds)
+(<20.10.2023> 12:7:59) [INFO] Closed PersonDatabase-Connection
+(<20.10.2023> 12:8:48) [INFO] Started.
+(<20.10.2023> 12:8:48) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 12:8:48) [INFO] Started Complete-Checkup
+(<20.10.2023> 12:8:48) [INFO] I can register 3 available interfaces
+(<20.10.2023> 12:8:48) [INFO] Timeout for HTTP-GET and HTTP-POST requests: 10.0 Seconds
+(<20.10.2023> 12:8:48) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 12:8:58) [INFO] Successfully tested the internet-connection at 'www.google.de:80'
+(<20.10.2023> 12:8:58) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 12:8:58) [INFO] Checked all services
+(<20.10.2023> 12:8:58) [WARNING] Not using Speech-Recognition
+(<20.10.2023> 12:8:58) [INFO] Creating/Checking PersonDB-Tables
+(<20.10.2023> 12:8:58) [INFO] Created all 1 tables
+(<20.10.2023> 12:9:10) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 12:9:10) [ERROR] Hello
+(<20.10.2023> 12:10:49) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 12:10:49) [ERROR] Hello
+(<20.10.2023> 12:10:50) [ERROR] An error occured: Detected Keyboard-Interruption
+(<20.10.2023> 12:10:50) [INFO] Closed. (Runtime=121.64732003211975 Seconds)
+(<20.10.2023> 12:10:50) [INFO] Closed PersonDatabase-Connection
