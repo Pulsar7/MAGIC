@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-File: NetworkTools.py
+File: network_tools.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
 import socket,psutil,requests
 # from scapy.all import (EtherDA)
+from src.modules.tool import Tool
 
 
-class NetworkTools():
-    def __init__(self,logger,reliable_service_host:str,reliable_service_port:int,web_tools) -> None:
-        (self.logger,self.reliable_service_host,self.reliable_service_port) = (logger,reliable_service_host,reliable_service_port)
+class NetworkTools(Tool):
+    def __init__(self,reliable_service_host:str,reliable_service_port:int,web_tools) -> None:
+        (self.reliable_service_host,self.reliable_service_port) = (reliable_service_host,reliable_service_port)
         self.web_tools = web_tools
         
     def get_available_interfaces(self) -> dict:

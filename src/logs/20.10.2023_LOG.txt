@@ -114,3 +114,22 @@
 (<20.10.2023> 12:10:50) [ERROR] An error occured: Detected Keyboard-Interruption
 (<20.10.2023> 12:10:50) [INFO] Closed. (Runtime=121.64732003211975 Seconds)
 (<20.10.2023> 12:10:50) [INFO] Closed PersonDatabase-Connection
+(<20.10.2023> 13:24:23) [INFO] Started.
+(<20.10.2023> 13:24:23) [INFO] Running on a Unix-Based-System (posix)
+(<20.10.2023> 13:24:23) [INFO] Started Complete-Checkup
+(<20.10.2023> 13:24:23) [INFO] I can register 3 available interfaces
+(<20.10.2023> 13:24:23) [INFO] Timeout for HTTP-GET and HTTP-POST requests: 10.0 Seconds
+(<20.10.2023> 13:24:23) [INFO] Checking the internet-connection-availablity
+(<20.10.2023> 13:24:23) [ERROR] [Errno -3] Temporary failure in name resolution
+(<20.10.2023> 13:24:23) [WARNING] Looks like I have no available internet-connection!
+(<20.10.2023> 13:24:23) [INFO] Check PersonDB-Filepath
+(<20.10.2023> 13:24:23) [INFO] Checked all services
+(<20.10.2023> 13:24:23) [WARNING] Cannot use Google-Text-To-Speech without an internet-connection
+(<20.10.2023> 13:24:23) [WARNING] Cannot use Speech-Recognition without an internet-connection!
+(<20.10.2023> 13:24:23) [INFO] Creating/Checking PersonDB-Tables
+(<20.10.2023> 13:24:23) [INFO] Created all 1 tables
+(<20.10.2023> 13:25:1) [ERROR] An error occured while trying to process user-input
+(<20.10.2023> 13:25:1) [ERROR] Hello
+(<20.10.2023> 13:25:2) [ERROR] An error occured: Detected Keyboard-Interruption
+(<20.10.2023> 13:25:2) [INFO] Closed. (Runtime=38.73570418357849 Seconds)
+(<20.10.2023> 13:25:2) [INFO] Closed PersonDatabase-Connection

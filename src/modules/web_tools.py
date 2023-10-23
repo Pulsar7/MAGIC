@@ -7,11 +7,11 @@ Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
 import requests,fake_headers
+from src.modules.tool import Tool
 
 
-class WebTools():
-    def __init__(self,logger,proxies:dict,request_timeout:float) -> None:
-        (self.logger) = (logger)
+class WebTools(Tool):
+    def __init__(self,proxies:dict,request_timeout:float) -> None:
         self.proxies:dict = proxies
         self.request_timeout:float = request_timeout
     

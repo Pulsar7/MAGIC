@@ -19,6 +19,7 @@ from src.modules.speech_recognizer import SpeechRecognizer
 from src.modules.speaker import SPEAKER
 from src.modules.calculator import CALCULATOR
 from src.modules.input_handler import UserInputProcessor
+from src.modules.system_monitor import SystemMonitor
 
 
 class MAGIC():
@@ -118,6 +119,7 @@ class MAGIC():
     
     ###### Command - Functions ######
     
+    
     def close_program(self) -> str:
         """Closes the program.
 
@@ -135,6 +137,7 @@ class MAGIC():
         """
         self.logger.console.print(self.COMMANDS)
         return "Showed all available commands."
+    
     
     ######                     ######
     
@@ -260,9 +263,12 @@ person_db = PersonDatabase(
     db_filepath=PERSON_DB_FILEPATH,
     logger=logger
 )
+# SystemMonitor
+system_monitor = SystemMonitor(
+    logger=logger
+)
 # WebTools
 web_tools = WebTools(
-    logger=logger,
     proxies={
         'http':args.socks_proxy_url,
         'https':args.socks_proxy_url,
@@ -271,12 +277,9 @@ web_tools = WebTools(
     request_timeout=args.web_request_timeout
 )
 # WifiTools
-wifi_tools = WifiTools(
-    logger=logger
-)
+wifi_tools = WifiTools()
 # NetworkTools
 networktools = NetworkTools(
-    logger=logger,
     reliable_service_host=args.reliable_service_host,
     reliable_service_port=args.reliable_service_port,
     web_tools=web_tools

@@ -15,7 +15,7 @@ from pydub import AudioSegment
 class SPEAKER():
     def __init__(self) -> None:
         self.engine = pyttsx3.init()
-        self.use_offline_tts:bool = False
+        self.use_offline_tts:bool = False # If no internet-connection is available
         self.currently_speaking:bool = False
         self.seconds_to_wait_until_next_speak_attempt:float = 0.5
         
