@@ -32,14 +32,13 @@ class MAGIC():
         self.speech_recognizer = speech_recognizer
         self.speaker = speaker
         self.calc = calc
-        self.user_input_processor = UserInputProcessor(logger=logger)
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
         self.running:bool = True
         self.COMMANDS:dict = {
             'help': {
-                'possible_commands': ["help me"],
+                'possible_commands': ["commands"],
                 'descr': "Shows all possible commands",
                 'function': self.show_help
             },
@@ -51,6 +50,7 @@ class MAGIC():
             }
         }
         #
+        self.user_input_processor = UserInputProcessor(logger=logger,magic_instance=self)
         
     def get_os(self) -> str:
         """
