@@ -28,6 +28,5 @@ PROXY_URL:str = str(os.environ.get("PROXIE_URL"))
 WEB_REQUEST_TIMEOUT:float = float(str(os.environ.get("WEB_REQUEST_TIMEOUT")))
 
 ### NetworkTools
-RELIABLE_SERVICE_HOST:str = str(os.environ.get("RELIABLE_SERVICE_HOST"))
-RELIABLE_SERVICE_PORT:int = int(str(os.environ.get("RELIABLE_SERVICE_PORT")))
+RELIABLE_SERVICE_URL:str = str(os.environ.get("RELIABLE_SERVICE_URL"))
 

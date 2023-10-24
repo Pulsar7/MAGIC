@@ -9,11 +9,12 @@ Python-Version: 3.10.12
 import socket,psutil,requests
 # from scapy.all import (EtherDA)
 from src.modules.tool import Tool
+from src.modules.web_tools import WebTools
 
 
 class NetworkTools(Tool):
-    def __init__(self,reliable_service_host:str,reliable_service_port:int,web_tools) -> None:
-        (self.reliable_service_host,self.reliable_service_port) = (reliable_service_host,reliable_service_port)
+    def __init__(self,reliable_service_url:str,web_tools:WebTools) -> None:
+        (self.reliable_service_url) = (reliable_service_url)
         self.web_tools = web_tools
         
     def get_available_interfaces(self) -> dict:
@@ -27,20 +28,14 @@ class NetworkTools(Tool):
             tuple((bool,str)): Returns the status of the internet-connection availablity and then a message to output
         """
         try:
-            sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM) # TCP
-            result = sock.connect_ex((self.reliable_service_host,self.reliable_service_port))
-            sock.close()
-            if result == 0:
-                (status,resp) = self.web_tools.get("http://"+self.reliable_service_host+":"+str(self.reliable_service_port))
-                if status == True:
-                    if resp.status_code == 200:
-                        return (True,f"Successfully tested the internet-connection at '{self.reliable_service_host}:{self.reliable_service_port}'")
-                    else:
-                        return (False,f"Received status-code '{resp.status_code}' while trying to access '{self.reliable_service_host}:{self.reliable_service_port}'")
+            (status,resp_text,status_code) = self.web_tools.get(url=self.reliable_service_url)
+            if status == True:
+                if status_code == 200:
+                    return (True,f"Successfully tested the internet-connection at '{self.reliable_service_url}'")
                 else:
-                    return (False,f"An error occured while trying to access '{self.reliable_service_host}:{self.reliable_service_port}': {resp}")
+                    return (False,f"Received status-code '{status_code}' while trying to access '{self.reliable_service_url}'")
             else:
-                return (False,f"Connection failed to: {self.reliable_service_host}:{self.reliable_service_port}")
+                return (False,f"An error occured while trying to access '{self.reliable_service_url}': {resp_text}")
         except Exception as e:
             return (False,str(e))
     

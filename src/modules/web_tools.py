@@ -6,8 +6,9 @@ File: web_tools.py
 Author: Benedikt Fichtner
 Python-Version: 3.10.12
 """
-import requests,fake_headers
+import requests
 from src.modules.tool import Tool
+from fake_headers import Headers
 
 
 class WebTools(Tool):
@@ -19,34 +20,34 @@ class WebTools(Tool):
         session = requests.Session()
         if use_proxy:
             session.proxies = self.proxies
-        # session.headers = fake_headers.firefox ! NO FAKE HEADERS
+        session.headers = Headers(headers=False).generate()
         return session
     
-    def get(self,url:str,use_proxy:bool=False) -> tuple[bool, object]:
+    def get(self,url:str,use_proxy:bool=False) -> tuple[bool,str,int]:
         """HTTP-GET-Request with the 'requests' module
 
         Returns:
-            tuple((bool,object)): Returns a status (if an exception occured or not) and the requests-response
+            tuple[bool,str,int]: Returns a status (if an exception occured or not) and the requests-response
         """
         try:
             session = self.create_new_session(use_proxy)
             resp = session.get(url,timeout=self.request_timeout)
             session.close()
-            return (True,resp)
+            return (True,"",resp.status_code)
         except Exception as _error:
-            return (False,str(_error))
+            return (False,str(_error),000)
         
-    def post(self,url:str,data:dict,use_proxy:bool=False) -> tuple[bool, object]:
+    def post(self,url:str,data:dict,use_proxy:bool=False) -> tuple[bool,str,int]:
         """HTTP-POST-Request with the 'requests' module
 
         Returns:
-            tuple((bool,object)): Returns a status (if an exception occured or not) and the requests-response
+            tuple[bool,str,int]: Returns a status (if an exception occured or not) and the requests-response
         """
         try:
             session = self.create_new_session(use_proxy)
             resp = session.post(url=url,data=data)
             session.close()
-            return (True,resp)
+            return (True,"",resp.status_code)
         except Exception as _error:
-            return (False,str(_error))
+            return (False,str(_error),000)
         

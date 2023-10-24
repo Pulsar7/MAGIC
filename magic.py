@@ -9,6 +9,7 @@ Python-Version: 3.10.12
 @Multi-functional Assistant for General Information and Control
 """
 import os,time,argparse
+from pydoc import cli
 from settings import * # load settings for database,logger,...
 from src.modules.logger import LOGGER
 from src.modules.person_database import PersonDatabase
@@ -133,8 +134,15 @@ class MAGIC():
         """Shows help-message
 
         Returns:
-            str: Returns a response as String. 
+            str: Returns a response as String.
         """
+        all_commands_overview:str = "All available commands:\n "
+        for command in self.COMMANDS:
+            all_commands_overview += f"""\
+                '{command}' {self.COMMANDS[command]['descr'][0].lower()+self.COMMANDS[command]['descr'][1:]}
+                But you can also type or say the following commands: {';'.join(self.COMMANDS[command]['possible_commands'])}\n
+            """
+        self.logger.info(msg=all_commands_overview,write_in_file=False,say=True,cli_output=False)
         self.logger.console.print(self.COMMANDS)
         return "Showed all available commands."
     
@@ -152,7 +160,7 @@ class MAGIC():
         if self.check_all(): # All tools/services are probably good.
             self.logger.info("Checked all services",say=True,cli_output=False)
             if self.network_availability == False:
-                self.logger.warning("Cannot use Google-Text-To-Speech without an internet-connection",say=True)
+                self.logger.warning("Cannot use Google-Text-To-Speech without an internet-connection!",say=True)
                 self.logger.warning("Cannot use Speech-Recognition without an internet-connection!",say=True)
                 self.use_speech_recognition = False
             elif self.use_speech_recognition == False:
@@ -233,12 +241,8 @@ logger_group.add_argument(
 
 networktools_group = parser.add_argument_group(title="NetworkTools",description="Configure NetworkTools")
 networktools_group.add_argument(
-    '-rh','--reliable-service-host',help=f"Reliable service HOST (Default={RELIABLE_SERVICE_HOST})",
-    type=str,default=RELIABLE_SERVICE_HOST
-)
-networktools_group.add_argument(
-    '-rp','--reliable-service-port',help=f"Reliable service PORT (Default={RELIABLE_SERVICE_PORT})",
-    type=int,default=RELIABLE_SERVICE_PORT
+    '-ru','--reliable-service-url',help=f"Reliable service-URL (Default={RELIABLE_SERVICE_URL})",
+    type=str,default=RELIABLE_SERVICE_URL
 )
 
 WebTools_group = parser.add_argument_group(title="WebTools",description="Configure WebTools")
@@ -280,8 +284,7 @@ web_tools = WebTools(
 wifi_tools = WifiTools()
 # NetworkTools
 networktools = NetworkTools(
-    reliable_service_host=args.reliable_service_host,
-    reliable_service_port=args.reliable_service_port,
+    reliable_service_url=args.reliable_service_url,
     web_tools=web_tools
 )
 # SpeechRecognizer

@@ -4,3 +4,4 @@
 /src/modules/__pycache__/*
 .gitignore
 *.pyc
+/src/logs/
