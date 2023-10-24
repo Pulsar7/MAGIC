@@ -130,5 +130,5 @@ class LOGGER():
         if write_in_file == True:
             self.write_in_logger_file(log=msg) # LOG as 'info'
             
-    def colored_input(self) -> str:
-        return input(f.WHITE+"#"+f.YELLOW+"$"+f.LIGHTGREEN_EX+"> "+f.RESET)
+    def colored_input(self,cli_input_append_text:str="") -> str:
+        return input(f.WHITE+"#"+cli_input_append_text+f.YELLOW+"$"+f.LIGHTGREEN_EX+"> "+f.RESET)

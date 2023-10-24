@@ -48,8 +48,15 @@ class MAGIC():
                 'possible_commands': ["close","quit"],
                 'descr': "Closes the program",
                 'function': self.close_program
+            },
+            
+            'search for network': {
+                'possible_commands': ["scan for specific network"],
+                'descr': "Scans for a specific network in your area",
+                'function': self.search_for_specific_network
             }
         }
+        self.errors:int = 0
         #
         self.user_input_processor = UserInputProcessor(logger=logger,magic_instance=self)
         
@@ -146,8 +153,76 @@ class MAGIC():
         self.logger.console.print(self.COMMANDS)
         return "Showed all available commands."
     
+    def search_for_specific_network(self) -> str:
+        cli_input_append_text:str = "SearchForNetwork"
+        self.logger.info("Do you want to search for a specific BSSID or a SSID?",say=True,write_in_file=False)
+        time.sleep(3) # waits for 3 seconds
+        user_input:str = self.get_user_input(cli_input_append_text)
+        bssid_keywords:list[str] = ["bssid", "basic service set identifier"]
+        ssid_keywords:list[str] = ["ssid", "service set identifier"]
+        if len(user_input) > 0:
+            user_input = user_input.lower().strip()
+            if any(keyword in user_input for keyword in bssid_keywords):
+                target_bssid:str = ""
+                args:list[str] = []
+                for keyword in bssid_keywords:
+                    if keyword in user_input:
+                        args = user_input.split(keyword)
+                        break
+                if len(args) > 1 and len(args[1]) > 0:
+                    target_bssid = args[1]
+                else:
+                    self.logger.info("Please tell me the specific BSSID-Address",say=True,write_in_file=False)
+                    user_input:str = self.get_user_input(cli_input_append_text)
+                    if len(user_input) > 0:
+                        target_bssid = user_input
+                    else:
+                        self.logger.info("Sorry, but I need the BSSID of the network",say=True)
+                        return ""
+                ######################
+                # CHECK TARGET-BSSID #
+                ######################
+            if any(keyword in user_input for keyword in ssid_keywords):
+                target_ssid:str = ""
+                args:list[str] = []
+                for keyword in ssid_keywords:
+                    if keyword in user_input:
+                        args = user_input.split(keyword)
+                        break
+                if len(args) > 1:
+                    target_ssid = args[1]
+                else:
+                    self.logger.info("Please tell me the specific SSID",say=True,write_in_file=False)
+                    user_input:str = self.get_user_input()
+                    if len(user_input) > 0:
+                        target_ssid = user_input
+                    else:
+                        self.logger.info("Sorry, but I need the SSID of the network",say=True)
+                        return ""
+                #####################
+                # CHECK TARGET-SSID #
+                #####################
+            if any(keyword in user_input for keyword in ["break", "close", "abort"]):
+                self.logger.info("Aborted the search for a specific network",say=True)
+        else:
+            pass
+        return ""
+    
     
     ######                     ######
+    
+    def get_user_input(self,cli_input_append_text:str="") -> str:
+        user_input:str = ""
+        if self.use_speech_recognition == True:
+            (status,text) = self.speech_recognizer.capture_microphone()
+            if status == True:
+                user_input = text
+            else:
+                self.logger.error(text)
+                self.errors += 1
+        else:
+            user_input:str = self.logger.colored_input(cli_input_append_text)
+        return user_input
     
     def run(self) -> None:
         """
@@ -179,29 +254,24 @@ class MAGIC():
             else:
                 self.logger.warning("Skipped creating/checking the PersonDB-Tables")
             ###### MAIN-Loop ######
-            errors:int = 0
             user_input:str = ""
             while (self.running):
                 try:
                     try:
-                        if self.use_speech_recognition == True:
-                            (status,text) = self.speech_recognizer.capture_microphone()
-                            if status == True:
-                                user_input = text
-                            else:
-                                self.logger.error(text)
-                                errors += 1
-                        else:
-                            user_input:str = self.logger.colored_input()
+                        user_input:str = self.get_user_input()
                         if len(user_input) > 0:
                             (status,resp) = self.user_input_processor.process_text(text=user_input)
-                            if status == True and len(resp) > 0:
-                                self.logger.info(resp)
+                            if status == True:
+                                if len(resp) > 0:
+                                    self.logger.info(resp)
                             else:
-                                errors += 1
-                                self.logger.error("An error occured while trying to process user-input",say=True)
-                                self.logger.error(resp) # If the error is complex, the text-to-speech-engine shouldn't say that.
-                        if errors >= 5:
+                                self.errors += 1
+                                if "invalid command" not in resp.lower():
+                                    self.logger.error("An error occured while trying to process user-input",say=True)
+                                    self.logger.error(resp) # If the error is complex, the text-to-speech-engine shouldn't say that.
+                                else:
+                                    self.logger.error(resp,say=True,write_in_file=False)
+                        if self.errors >= 5:
                             self.logger.error("Too many errors!",say=True)
                             self.running = False
                     except KeyboardInterrupt:
