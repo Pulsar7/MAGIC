@@ -9,8 +9,7 @@ Python-Version: 3.10.12
 @Multi-functional Assistant for General Information and Control
 """
 import os,time,argparse
-from pydoc import cli
-from settings import * # load settings for database,logger,...
+from settings import * # load local-environmet variables/default variables
 from src.modules.logger import LOGGER
 from src.modules.person_database import PersonDatabase
 from src.modules.web_tools import WebTools
@@ -21,10 +20,11 @@ from src.modules.speaker import SPEAKER
 from src.modules.calculator import CALCULATOR
 from src.modules.input_handler import UserInputProcessor
 from src.modules.system_monitor import SystemMonitor
+from src.modules.osint_tool import OsintTool
 
 
 class MAGIC():
-    def __init__(self,logger:LOGGER,person_db:PersonDatabase,web_tools:WebTools,wifi_tools:WifiTools,networktools:NetworkTools,speech_recognizer:SpeechRecognizer,use_speech_recognition:bool,speaker:SPEAKER,calc:CALCULATOR) -> None:
+    def __init__(self,logger:LOGGER,person_db:PersonDatabase,web_tools:WebTools,wifi_tools:WifiTools,networktools:NetworkTools,speech_recognizer:SpeechRecognizer,use_speech_recognition:bool,speaker:SPEAKER,calc:CALCULATOR,osint_tool:OsintTool) -> None:
         self.logger = logger
         self.person_db = person_db
         self.web_tools = web_tools
@@ -33,6 +33,7 @@ class MAGIC():
         self.speech_recognizer = speech_recognizer
         self.speaker = speaker
         self.calc = calc
+        self.osint_tool = osint_tool
         # Status-Variables
         self.network_availability:bool = False
         self.use_speech_recognition:bool = use_speech_recognition
@@ -212,6 +213,14 @@ class MAGIC():
     ######                     ######
     
     def get_user_input(self,cli_input_append_text:str="") -> str:
+        """Captures a microphone or reads the CLI-Input.
+
+        Args:
+            cli_input_append_text (str): Text before the CLI-Input. Defaults to "".
+
+        Returns:
+            str: Returns the user-input-text as a string
+        """
         user_input:str = ""
         if self.use_speech_recognition == True:
             (status,text) = self.speech_recognizer.capture_microphone()
@@ -365,6 +374,10 @@ speech_recognizer = SpeechRecognizer(
 calc = CALCULATOR(
     logger=logger
 )
+# OSINT-Tool
+osint_tool = OsintTool(
+    person_db=person_db
+)
 
 if __name__ == "__main__":
     magic = MAGIC(
@@ -376,6 +389,7 @@ if __name__ == "__main__":
         speech_recognizer=speech_recognizer,
         use_speech_recognition=not args.without_speech_recognition,
         speaker=speaker,
-        calc=calc
+        calc=calc,
+        osint_tool=osint_tool
     )
     magic.run()
